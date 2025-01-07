@@ -1,27 +1,31 @@
+import { NavLink } from "react-router";
 import ProfileIMG from "./assets/images/ProfileIMG.png";
 import SearchIcon from "./assets/icons/Search.svg";
 import GiftIcon from "./assets/icons/GiftBox.svg";
 import BellIcon from "./assets/icons/NotificationBell.svg";
 import Logo from "./assets/images/logo.png";
+import "./Navbar.css";
 
 function Navbar() {
   return (
-    <header className="w-full h-20 flex items-center justify-between px-14">
+    <header className="w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-10">
       <div id="header-left" className="flex items-center gap-12">
-        <img
-          id="logo"
-          src={Logo}
-          alt="Cineflow"
-          className="h-8 select-none drop-shadow-[0_0_3px_rgba(185,9,11,0.5)]"
-        />
+        <NavLink to="/">
+          <img
+            id="logo"
+            src={Logo}
+            alt="Cineflow"
+            className="h-8 select-none"
+          />
+        </NavLink>
 
         <nav id="navbar">
           <ol className="flex items-center justify-center gap-5 text-sm text-neutral-200 cursor-pointer">
-            <li className="font-bold text-neutral-50">Home</li>
-            <li>TV Shows</li>
-            <li>Movies</li>
-            <li>Recently Added</li>
-            <li>My List</li>
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/shows">TV Shows</NavLink>
+            <NavLink to="/movies">Movies</NavLink>
+            <NavLink to="/recent">Recently Added</NavLink>
+            <NavLink to="/my-list">My List</NavLink>
           </ol>
         </nav>
       </div>

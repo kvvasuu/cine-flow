@@ -1,10 +1,18 @@
+import { Routes, Route } from "react-router";
 import Navbar from "./Navbar";
+import Home from "./Home/Home";
 
 function App() {
   return (
     <>
-      <Navbar></Navbar>
-      <div className="w-full h-full"></div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/shows" element={<Home />} />
+        <Route path="/movies" element={<Home />} />
+        <Route path="/recent" element={<Home />} />
+        <Route path="/my-list" element={<Home />} />
+      </Routes>
     </>
   );
 }
