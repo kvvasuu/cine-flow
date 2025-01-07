@@ -24,7 +24,7 @@ function HighligtedMovie({ movie }: Props) {
   ];
 
   return (
-    <section className="flex flex-col justify-end w-full h-[60rem] relative shrink-0">
+    <section className="flex flex-col justify-end w-full h-[60rem] relative shrink-0 overflow-hidden">
       <img
         src={MoviePoster}
         alt="Movie poster"
