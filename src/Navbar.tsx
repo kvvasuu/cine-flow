@@ -6,9 +6,18 @@ import BellIcon from "./assets/icons/NotificationBell.svg";
 import Logo from "./assets/images/logo.png";
 import "./Navbar.css";
 
-function Navbar() {
+interface Props {
+  hasBackground: boolean;
+}
+
+function Navbar({ hasBackground }: Props) {
   return (
-    <header className="w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-10">
+    <header
+      className={
+        "w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-40" +
+        (hasBackground ? "bg-neutral-900" : "")
+      }
+    >
       <div id="header-left" className="flex items-center gap-12">
         <NavLink to="/">
           <img

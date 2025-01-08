@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="w-full h-72 flex flex-col justify-end max-w-5xl px-16 py-4 mx-auto gap-4">
+    <footer className="w-full flex flex-col justify-end max-w-5xl px-16 py-4 mx-auto gap-4">
       <div className="flex gap-4 text-2xl text-neutral-500">
         <a
           href="https://www.instagram.com/kvvasu/"
@@ -30,6 +30,31 @@ function Footer() {
         >
           <i className="fa-brands fa-github"></i>
         </a>
+      </div>
+      <div className="flex w-full text-sm text-neutral-500">
+        <div className="w-1/4">
+          <p className="my-1 cursor-pointer">FAQ</p>
+          <p className="my-1 cursor-pointer">Investor Relations</p>
+          <p className="my-1 cursor-pointer">Privacy</p>
+          <p className="my-1 cursor-pointer">Speed Test</p>
+        </div>
+        <div className="w-1/4">
+          <p className="my-1 cursor-pointer">Help Centre</p>
+          <p className="my-1 cursor-pointer">Jobs</p>
+          <p className="my-1 cursor-pointer">Cookie Preferences</p>
+          <p className="my-1 cursor-pointer">Legal Notices</p>
+        </div>
+        <div className="w-1/4">
+          <p className="my-1 cursor-pointer">Account</p>
+          <p className="my-1 cursor-pointer">Ways to Watch</p>
+          <p className="my-1 cursor-pointer">Corporate Information</p>
+          <p className="my-1 cursor-pointer">Only on Cineflow</p>
+        </div>
+        <div className="w-1/4">
+          <p className="my-1 cursor-pointer">Media Centre</p>
+          <p className="my-1 cursor-pointer">Terms of Use</p>
+          <p className="my-1 cursor-pointer">Contact Us</p>
+        </div>
       </div>
       <p className="text-neutral-500 text-xs">
         © 2025 Cineflow, Powered by{" "}
