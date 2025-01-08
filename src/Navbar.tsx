@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import ProfileIMG from "./assets/images/ProfileIMG.png";
 import SearchIcon from "./assets/icons/Search.svg";
@@ -6,16 +7,26 @@ import BellIcon from "./assets/icons/NotificationBell.svg";
 import Logo from "./assets/images/logo.png";
 import "./Navbar.css";
 
-interface Props {
-  hasBackground: boolean;
-}
+function Navbar() {
+  const [hasBackground, setHasBackground] = useState(false);
 
-function Navbar({ hasBackground }: Props) {
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.body.scrollTop;
+      setHasBackground(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <header
       className={
-        "w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-40" +
-        (hasBackground ? "bg-neutral-900" : "")
+        "w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-40 transition-all" +
+        (hasBackground ? " bg-neutral-900" : "")
       }
     >
       <div id="header-left" className="flex items-center gap-12">

@@ -17,7 +17,7 @@ function Home() {
     "New Amsterdam",
   ];
   return (
-    <div className="w-full overflow-y-auto pb-8 flex flex-col gap-8">
+    <div className="w-full pb-8 flex flex-col gap-8">
       <HighlightedMovie movie="Dummy Movie"></HighlightedMovie>
       <SliderList movies={movies} category="Top 10"></SliderList>
       <SliderList movies={movies} category="Watch Again"></SliderList>
