@@ -1,17 +1,18 @@
 import { useRef, useState, useEffect } from "react";
 
+import { Movie } from "../types.tsx";
+
 import SliderListElement from "./SliderListElement.tsx";
 import SliderListElementTall from "./SliderListElementTall.tsx";
-import MoviePoster from "../assets/images/MoviePoster-small.png";
-import MoviePosterTall from "../assets/images/2.jpg";
 
 interface Props {
-  movies: string[];
+  movies: Movie[];
   category: string;
   isTall?: boolean;
+  onItemSelect: (index: number) => void;
 }
 
-function SliderList({ movies, category, isTall }: Props) {
+function SliderList({ movies, category, isTall, onItemSelect }: Props) {
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const [showPrevButton, setShowPrevButton] = useState(false);
@@ -58,34 +59,48 @@ function SliderList({ movies, category, isTall }: Props) {
   }, []);
 
   return (
-    <div className="w-full min-h-52 flex flex-col z-10 gap-2 relative">
-      <div className="w-16 h-full bg-gradient-slider absolute right-0 z-20 pointer-events-none"></div>
-      <div className="w-16 h-full bg-gradient-slider absolute left-0 z-20 pointer-events-none rotate-180"></div>
+    <div className="w-full flex flex-col z-10 gap-2 relative">
       <h2 className="font-semibold text-xl text-neutral-100 px-16">
         {category}
       </h2>
 
       {showPrevButton && (
-        <button
-          onClick={scrollLeft}
-          className={
-            "absolute left-10 flex items-center justify-center text-5xl text-neutral-100/70 w-12 h-12  z-30 outline-none hover:text-neutral-100 " +
-            (isTall ? "bottom-[216px]" : "bottom-[62px]")
-          }
-        >
-          <i className="fa-solid fa-chevron-left"></i>
-        </button>
+        <>
+          <button
+            onClick={scrollLeft}
+            className={
+              "absolute left-10 flex items-center justify-center text-5xl text-neutral-100/70 w-12 h-12  z-30 outline-none hover:text-neutral-100 " +
+              (isTall ? "bottom-[216px]" : "bottom-[62px]")
+            }
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </button>
+          <div
+            className={
+              "w-16 bg-gradient-slider absolute left-0 bottom-0 z-20 pointer-events-none rotate-180 " +
+              (isTall ? "h-[30rem]" : "h-40")
+            }
+          ></div>
+        </>
       )}
       {showNextButton && (
-        <button
-          onClick={scrollRight}
-          className={
-            "absolute right-10 flex items-center justify-center text-5xl text-neutral-100/70 w-12 h-12  z-30 outline-none hover:text-neutral-100 " +
-            (isTall ? "bottom-[216px]" : "bottom-[62px]")
-          }
-        >
-          <i className="fa-solid fa-chevron-right"></i>
-        </button>
+        <>
+          <button
+            onClick={scrollRight}
+            className={
+              "absolute right-10 flex items-center justify-center text-5xl text-neutral-100/70 w-12 h-12  z-30 outline-none hover:text-neutral-100 " +
+              (isTall ? "bottom-[216px]" : "bottom-[62px]")
+            }
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </button>
+          <div
+            className={
+              "w-16 bg-gradient-slider absolute right-0 bottom-0 z-20 pointer-events-none " +
+              (isTall ? "h-[30rem]" : "h-40")
+            }
+          ></div>
+        </>
       )}
 
       <div
@@ -95,15 +110,16 @@ function SliderList({ movies, category, isTall }: Props) {
         {movies.map((el, index) => {
           return isTall ? (
             <SliderListElementTall
-              name={el}
-              img={MoviePosterTall}
-              key={index}
+              movie={el}
+              key={el.id}
+              onClick={onItemSelect}
             ></SliderListElementTall>
           ) : (
             <SliderListElement
-              name={el}
-              img={MoviePoster}
-              key={index}
+              movie={el}
+              key={el.id}
+              index={index}
+              onClick={onItemSelect}
             ></SliderListElement>
           );
         })}
