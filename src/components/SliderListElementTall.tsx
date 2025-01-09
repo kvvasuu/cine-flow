@@ -3,11 +3,11 @@ interface Props {
   img: string;
 }
 
-function SliderListElement({ name, img }: Props) {
+function SliderListElementTall({ name, img }: Props) {
   return (
-    <div className="w-[284px] h-40 flex flex-col relative shrink-0 overflow-hidden rounded-sm group cursor-pointer snap-start">
+    <div className="w-[284px] h-[30rem] flex flex-col relative shrink-0 overflow-hidden rounded-sm group cursor-pointer snap-start">
       <img
-        className="w-full h-full absolute top-0 left-0"
+        className="w-full h-full absolute top-0 left-0 object-cover"
         src={img}
         alt={name}
       />
@@ -20,4 +20,4 @@ function SliderListElement({ name, img }: Props) {
   );
 }
 
-export default SliderListElement;
+export default SliderListElementTall;
