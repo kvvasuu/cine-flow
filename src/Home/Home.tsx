@@ -6,6 +6,7 @@ import { Movie } from "../types.tsx";
 import SliderList from "../components/SliderList";
 import HighlightedMovie from "./HighlightedMovie.tsx";
 import InfoModal from "../components/InfoModal.tsx";
+import SliderListSkeleton from "../skeletons/SliderListSkeleton.tsx";
 
 axios.interceptors.request.use((config) => {
   config.headers.Authorization =
@@ -13,34 +14,12 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-const dummyMovie: Movie = {
-  id: 1,
-  title: "Sonic the Hedgehog 3",
-  backdrop_path: "/zOpe0eHsq0A2NvNyBbtT6sj53qV.jpg",
-  poster_path: "/d8Ryb8AunYAuycVKDp5HpdWPKgC.jpg",
-  overview:
-    "Sonic, Knuckles, and Tails reunite against a powerful new adversary, Shadow, a mysterious villain with powers unlike anything they have faced before. With their abilities outmatched in every way, Team Sonic must seek out an unlikely alliance in hopes of stopping Shadow and protecting the planet.",
-  release_date: "2024-12-20",
-  vote_average: 7,
-};
-
 function Home() {
-  const movies = [
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-    dummyMovie,
-  ];
-
   const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
+  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+
+  const [selectedMovieId, setSelectedMovieId] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,55 +29,63 @@ function Home() {
       setNowPlayingMovies(nowPlaying.data.results);
 
       const topRated = await axios.get(
-        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&region=us"
+        "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&region=us"
       );
       setTopRatedMovies(topRated.data.results);
+
+      const popular = await axios.get(
+        "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2&region=us"
+      );
+      setPopularMovies(popular.data.results);
     };
 
     fetchData();
   }, []);
 
-  const handleMovieClick = (id: number): void => {
-    const fetchData = async () => {
-      const movie = await axios.get(
-        `https://api.themoviedb.org/3/find/external_id=${id}?external_source=imdb_id`
-      );
-      console.log(movie);
-    };
-
-    fetchData();
-
-    console.log(movies[id].title);
-  };
-
   return (
     <>
       <div className="w-full pb-8 flex flex-col gap-8">
-        {nowPlayingMovies.length > 0 && (
-          <HighlightedMovie movies={nowPlayingMovies}></HighlightedMovie>
+        <HighlightedMovie
+          movies={nowPlayingMovies}
+          onItemSelect={(id) => setSelectedMovieId(id)}
+        ></HighlightedMovie>
+
+        {popularMovies.length > 0 ? (
+          <SliderList
+            movies={popularMovies}
+            category="Popular"
+            onItemSelect={(id) => setSelectedMovieId(id)}
+          ></SliderList>
+        ) : (
+          <SliderListSkeleton></SliderListSkeleton>
         )}
 
-        <SliderList
-          movies={movies}
-          category="Watch Again"
-          onItemSelect={handleMovieClick}
-        ></SliderList>
-        {topRatedMovies.length > 0 && (
+        {topRatedMovies.length > 0 ? (
           <SliderList
             movies={topRatedMovies}
-            category="Top 10"
+            category="Top Rated"
             isTall={true}
-            onItemSelect={handleMovieClick}
+            onItemSelect={(id) => setSelectedMovieId(id)}
           ></SliderList>
+        ) : (
+          <SliderListSkeleton></SliderListSkeleton>
         )}
 
-        <SliderList
+        {/* <SliderList
           movies={movies}
           category="My List"
           onItemSelect={handleMovieClick}
-        ></SliderList>
+        ></SliderList> */}
       </div>
-      <InfoModal movieId={1}></InfoModal>
+      {selectedMovieId > 0 && (
+        <InfoModal
+          movieId={selectedMovieId}
+          openModal={!!selectedMovieId}
+          closeModal={() => {
+            setSelectedMovieId(0);
+          }}
+        ></InfoModal>
+      )}
     </>
   );
 }

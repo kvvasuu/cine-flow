@@ -6,6 +6,7 @@ interface Movie {
   overview: string;
   vote_average: number;
   release_date: string;
+  genres: { id: string; name: string }[];
 }
 
 export type { Movie };

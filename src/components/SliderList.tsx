@@ -107,7 +107,7 @@ function SliderList({ movies, category, isTall, onItemSelect }: Props) {
         className="w-full h-full flex items-center justify-start overflow-x-auto snap-x scroll-px-16 gap-2 px-16 no-scrollbar scroll-smooth"
         ref={sliderRef}
       >
-        {movies.map((el, index) => {
+        {movies.map((el) => {
           return isTall ? (
             <SliderListElementTall
               movie={el}
@@ -118,7 +118,6 @@ function SliderList({ movies, category, isTall, onItemSelect }: Props) {
             <SliderListElement
               movie={el}
               key={el.id}
-              index={index}
               onClick={onItemSelect}
             ></SliderListElement>
           );

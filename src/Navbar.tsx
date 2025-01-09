@@ -45,7 +45,7 @@ function Navbar() {
             <NavLink to="/shows">TV Shows</NavLink>
             <NavLink to="/movies">Movies</NavLink>
             <NavLink to="/recent">Recently Added</NavLink>
-            <NavLink to="/my-list">My List</NavLink>
+            {/* <NavLink to="/my-list">My List</NavLink> */}
           </ol>
         </nav>
       </div>
