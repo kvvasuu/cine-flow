@@ -44,10 +44,10 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
         />
         <div className="w-full min-h-[60rem] absolute top-0 left-0 pointer-events-none object-cover z-10 bg-gradient-small"></div>
         <div className="flex flex-col items-start gap-4 z-10 w-1/2 max-w-2xl p-16">
-          <h2 className="text-5xl font-bold text-neutral-50 select-none">
+          <h2 className="text-5xl font-bold text-neutral-50 select-none drop-shadow">
             {movies[highlightedMovieIndex].title}
           </h2>
-          <h4 className="text-xl text-neutral-100">
+          <h4 className="text-xl text-neutral-100 drop-shadow">
             {movies[highlightedMovieIndex].overview}
           </h4>
           <div className="flex gap-4 mb-6">
