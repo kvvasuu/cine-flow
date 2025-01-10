@@ -1,7 +1,9 @@
+import TMDB from "./assets/images/TMDB.svg";
+
 function Footer() {
   return (
     <footer className="w-full flex flex-col justify-end max-w-5xl px-16 py-4 mx-auto gap-4">
-      <div className="flex gap-4 text-2xl text-neutral-500">
+      <div className="flex justify-start items-center gap-4 text-2xl text-neutral-500">
         <a
           href="https://www.instagram.com/kvvasu/"
           target="_blank"
@@ -29,6 +31,9 @@ function Footer() {
           className="hover:text-neutral-300"
         >
           <i className="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.themoviedb.org/" target="_blank">
+          <img src={TMDB} alt="TMDB" width="200px" />
         </a>
       </div>
       <div className="flex w-full text-sm text-neutral-500">
