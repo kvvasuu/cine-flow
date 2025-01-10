@@ -24,7 +24,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const nowPlaying = await axios.get(
-        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&region=us"
+        "https://api.themoviedb.org/3/movie/now_playing?append_to_response=videos&language=en-US&page=1&region=us"
       );
       setNowPlayingMovies(nowPlaying.data.results);
 

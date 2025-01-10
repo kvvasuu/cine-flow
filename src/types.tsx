@@ -7,6 +7,8 @@ interface Movie {
   vote_average: number;
   release_date: string;
   genres: { id: string; name: string }[];
+  runtime: number;
+  trailerKey: string;
 }
 
 export type { Movie };

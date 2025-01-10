@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import SliderList from "../components/SliderList";
 import { Movie } from "../types";
@@ -25,6 +26,19 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
   const handleMovieClick = (id: number): void => {
     const movieIndex = movies.findIndex((movie) => movie.id === id);
     setHighlightedMovieIndex(movieIndex);
+  };
+
+  const playTrailer = async () => {
+    const movie = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movies[highlightedMovieIndex].id}/videos?language=en-US`
+    );
+    if (!movie) {
+      return;
+    }
+    window.open(
+      `https://www.youtube.com/watch?v=${movie.data.results[0].key}`,
+      "_blank"
+    );
   };
 
   useEffect(() => {
@@ -61,7 +75,10 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
             {movies[highlightedMovieIndex].overview}
           </h4>
           <div className="flex gap-4 mb-6">
-            <button className="flex items-center justify-center gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
+            <button
+              className="flex items-center justify-center gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200"
+              onClick={playTrailer}
+            >
               <img src={Play} alt="" className="w-6 h-6" />
               Play
             </button>

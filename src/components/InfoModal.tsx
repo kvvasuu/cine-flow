@@ -24,9 +24,34 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
   useEffect(() => {
     const fetchData = async () => {
       const movie = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`
+        `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos&language=en-US`
       );
-      setMovieData(movie.data);
+      const trailerKey = movie.data.videos.results[0].key;
+
+      const {
+        id,
+        title,
+        backdrop_path,
+        poster_path,
+        overview,
+        vote_average,
+        release_date,
+        genres,
+        runtime,
+      } = { ...movie.data };
+
+      setMovieData({
+        id,
+        title,
+        backdrop_path,
+        poster_path,
+        overview,
+        vote_average,
+        release_date,
+        genres,
+        runtime,
+        trailerKey,
+      });
     };
 
     const loaderTimeout = setTimeout(() => {
@@ -116,10 +141,17 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
                 <h2 className="text-4xl font-bold text-neutral-50 select-none z-20">
                   {movieData.title}
                 </h2>
-                <button className="flex items-center justify-center mt-6 gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
-                  <img src={Play} alt="" className="w-6 h-6" />
-                  Play
-                </button>
+                <a
+                  href={
+                    "https://www.youtube.com/watch?v=" + movieData.trailerKey
+                  }
+                  target="_blank"
+                >
+                  <button className="flex items-center justify-center mt-6 gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
+                    <img src={Play} alt="" className="w-6 h-6" />
+                    Play
+                  </button>
+                </a>
               </div>
               <div className="flex mt-16 grow gap-8">
                 <div className="grow">
@@ -138,6 +170,9 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
                     </div>
                     <div className="text-lg text-neutral-50 py-1">
                       {movieData.release_date.slice(0, 4)}
+                    </div>
+                    <div className="text-lg text-neutral-50 py-1">
+                      {movieData.runtime} min.
                     </div>
                   </div>
 
@@ -191,6 +226,7 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
                     <div className="flex flex-row gap-4">
                       <div className="w-12 h-8 bg-neutral-700 rounded-md"></div>
                       <div className="w-20 mt-1 h-6 bg-neutral-700 rounded-full"></div>
+                      <div className="w-16 mt-1 h-6 bg-neutral-700 rounded-full"></div>
                     </div>
 
                     <article>
