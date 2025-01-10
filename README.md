@@ -1,50 +1,51 @@
-# React + TypeScript + Vite
+# Cineflow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## :globe_with_meridians: General info
 
-Currently, two official plugins are available:
+**Cineflow** is a visually-focused application designed as a Netflix clone, using The Movie Database (TMDB) API to present users with an engaging and cinematic interface for browsing movie and TV show data.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The main goal of this project is to improve React skills while creating a sleek, user-friendly interface for TMDB’s vast collection of media content.
 
-## Expanding the ESLint configuration
+Keep in mind that this application is a learning project and focuses mainly on UI design. It currently has limited functionality.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## :eight_pointed_black_star: Features:
 
-- Configure the top-level `parserOptions` property like this:
+#### Sleek Interface :clapper:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+#### Movie and TV show browsing: Explore TMDB’s catalog with an intuitive and visually appealing interface.
+
+#### Dynamic components: Engage with interactive elements like carousels, modals, and more.
+
+#### Focus on Design :art:
+
+#### Seamlessly fetch data from TMDB to display trending movies, top-rated shows, and more.
+
+#### Present detailed movie/TV show information, including posters, descriptions, and ratings.
+
+## Technologies:
+
+- Typescript
+- React (Hooks, Context API)
+- Tailwind CSS
+- FontAwesome
+
+## Setup
+
+Before running the app, you need to set up environmental variables. This includes the TMDB API key, which is required for the app to function correctly.
+
+Create a .env file in the project’s root folder with the following variable:
 ```
+VITE_TMDB_API_KEY=<your_tmdb_api_key>
+```
+Replace <your_tmdb_api_key> with your actual API key from TMDB.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To get started with CineFlow, follow these steps:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
