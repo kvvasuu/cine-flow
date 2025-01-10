@@ -8,12 +8,6 @@ import HighlightedMovie from "./HighlightedMovie.tsx";
 import InfoModal from "../components/InfoModal.tsx";
 import SliderListSkeleton from "../skeletons/SliderListSkeleton.tsx";
 
-axios.interceptors.request.use((config) => {
-  config.headers.Authorization =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZGQ4ZDU2YTI1ZWYwYzcyMjgxMGI2MzI2NzJiMjgyZCIsIm5iZiI6MTczNjE4MzIwNC40NTQwMDAyLCJzdWIiOiI2NzdjMGRhNGVjYTg1YmQ1MDg3MmExYTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Jbnr86Dr-iRV44oLxUp5Z4jAR66uAsB1Z9D2l4eoKTE";
-  return config;
-});
-
 function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
