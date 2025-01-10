@@ -16,6 +16,12 @@ interface Props {
 function HighligtedMovie({ movies, onItemSelect }: Props) {
   const [highlightedMovieIndex, setHighlightedMovieIndex] = useState(0);
 
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+
+  const handleImgLoad = () => {
+    setIsImgLoaded(true);
+  };
+
   const handleMovieClick = (id: number): void => {
     const movieIndex = movies.findIndex((movie) => movie.id === id);
     setHighlightedMovieIndex(movieIndex);
@@ -39,8 +45,12 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
             "https://image.tmdb.org/t/p/original" +
             movies[highlightedMovieIndex].backdrop_path
           }
+          onLoad={handleImgLoad}
           alt="Movie poster"
-          className="w-full min-h-[60rem] absolute top-0 left-0 pointer-events-none object-cover"
+          className={
+            "w-full min-h-[60rem] absolute top-0 left-0 pointer-events-none object-cover transition-all " +
+            (isImgLoaded ? "opacity-100" : "opacity-0")
+          }
         />
         <div className="w-full min-h-[60rem] absolute top-0 left-0 pointer-events-none object-cover z-10 bg-gradient-small"></div>
         <div className="flex flex-col items-start gap-4 z-10 w-1/2 max-w-2xl p-16">

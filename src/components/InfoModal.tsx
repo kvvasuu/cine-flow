@@ -13,6 +13,7 @@ interface Props {
 
 function InfoModal({ movieId, openModal, closeModal }: Props) {
   const [movieData, setMovieData] = useState<Movie | null>(null);
+  const [showSkeleton, setShowSkeleton] = useState(false);
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -28,7 +29,13 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
       setMovieData(movie.data);
     };
 
+    const loaderTimeout = setTimeout(() => {
+      setShowSkeleton(true);
+    }, 1000);
+
     fetchData();
+
+    return () => clearTimeout(loaderTimeout);
   }, []);
 
   const modalRef = useRef<HTMLDialogElement | null>(null);
@@ -69,19 +76,25 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
     }
   }, [openModal]);
 
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+
+  const handleImgLoad = () => {
+    setIsImgLoaded(true);
+  };
+
   return (
     <dialog
       className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow"
       ref={modalRef}
     >
-      {!!movieData && (
+      {!!movieData ? (
         <>
           <div
             className="w-full h-full relative shrink-0 flex flex-col justify-end p-12"
             ref={childrenRef}
           >
             <button
-              className="text-5xl h-12 w-12 text-neutral-50 absolute top-6 right-6 hover:text-neutral-200 z-20"
+              className="text-5xl h-12 w-12 text-neutral-50 absolute top-6 right-6 hover:text-neutral-200 z-20 outline-none"
               onClick={closeModal}
             >
               <i className="fa-solid fa-xmark"></i>
@@ -91,10 +104,14 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
                 "https://image.tmdb.org/t/p/original" + movieData.backdrop_path
               }
               alt="Movie poster"
-              className="w-full absolute h-3/4 top-0 left-0 pointer-events-none object-cover select-none"
+              className={
+                "w-full absolute h-3/4 top-0 left-0 pointer-events-none object-cover select-none transition-all " +
+                (isImgLoaded ? "opacity-100" : "opacity-0")
+              }
+              onLoad={handleImgLoad}
             />
             <div className="w-full absolute h-3/4 top-0 left-0 pointer-events-none object-cover z-10 bg-gradient-small"></div>
-            <section className="w-full h-1/2 z-10 flex flex-col">
+            <section className="w-full h-1/2 z-10 flex flex-col relative">
               <div>
                 <h2 className="text-4xl font-bold text-neutral-50 select-none z-20">
                   {movieData.title}
@@ -149,18 +166,48 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
               </div>
             </section>
           </div>
-          {/* <section>
-            <div className="flex flex-col items-start gap-4 z-10 w-1/2 max-w-2xl p-16">
-              <h4 className="text-xl text-neutral-100">{movieData.overview}</h4>
-              <div className="flex gap-4 mb-6">
-                <button className="flex items-center justify-center gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
-                  <img src={Play} alt="" className="w-6 h-6" />
-                  Play
-                </button>
-              </div>
-            </div>
-          </section> */}
         </>
+      ) : (
+        showSkeleton && (
+          <>
+            <div
+              className="w-full h-full relative shrink-0 flex flex-col justify-end p-12"
+              ref={childrenRef}
+            >
+              <button
+                className="text-5xl h-12 w-12 text-neutral-50 absolute top-6 right-6 hover:text-neutral-200 z-20 outline-none"
+                onClick={closeModal}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+              <div className="w-full absolute h-3/4 top-0 left-0 pointer-events-none object-cover z-10 bg-gradient-small"></div>
+              <section className="w-full h-1/2 z-10 flex flex-col animate-pulse">
+                <div>
+                  <div className="w-64 h-12 bg-neutral-700 rounded-full mb-4"></div>
+                  <div className="h-12 w-[136px] bg-neutral-700 rounded"></div>
+                </div>
+                <div className="flex mt-16 grow gap-8">
+                  <div className="grow">
+                    <div className="flex flex-row gap-4">
+                      <div className="w-12 h-8 bg-neutral-700 rounded-md"></div>
+                      <div className="w-20 mt-1 h-6 bg-neutral-700 rounded-full"></div>
+                    </div>
+
+                    <article>
+                      <div className="w-96 h-6 bg-neutral-700 rounded-full mt-4"></div>
+                      <div className="w-80 h-6 bg-neutral-700 rounded-full mt-2"></div>
+                      <div className="w-96 h-6 bg-neutral-700 rounded-full mt-2"></div>
+                    </article>
+                  </div>
+                  <div className="flex flex-col gap-6 w-2/5 shrink-0">
+                    <div className="w-1/2 h-6 bg-neutral-700 rounded-full"></div>
+                    <div className="w-1/2 h-6 bg-neutral-700 rounded-full"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </>
+        )
       )}
     </dialog>
   );

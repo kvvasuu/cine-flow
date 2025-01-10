@@ -4,7 +4,6 @@ import ProfileIMG from "./assets/images/ProfileIMG.png";
 import SearchIcon from "./assets/icons/Search.svg";
 import GiftIcon from "./assets/icons/GiftBox.svg";
 import BellIcon from "./assets/icons/NotificationBell.svg";
-import Logo from "./assets/images/logo.png";
 import "./Navbar.css";
 
 function Navbar() {
@@ -25,18 +24,19 @@ function Navbar() {
   return (
     <header
       className={
-        "w-full h-20 flex items-center justify-between px-14 fixed top-0 left-0 z-40 transition-all" +
+        "w-full h-16 flex items-center justify-between px-14 fixed top-0 left-0 z-40 transition-all" +
         (hasBackground ? " bg-neutral-900" : "")
       }
     >
       <div id="header-left" className="flex items-center gap-12">
         <NavLink to="/">
-          <img
+          <h2 className="text-4xl font-clash font-bold text-ruby">Cineflow</h2>
+          {/* <img
             id="logo"
             src={Logo}
             alt="Cineflow"
             className="h-8 select-none"
-          />
+          /> */}
         </NavLink>
 
         <nav id="navbar">
