@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 
 import axios from "axios";
 import { Movie } from "../types";
@@ -107,9 +108,9 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
     setIsImgLoaded(true);
   };
 
-  return (
+  return createPortal(
     <dialog
-      className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow"
+      className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow backdrop:bg-black/50 backdrop:backdrop-blur-[2px]"
       ref={modalRef}
     >
       {!!movieData ? (
@@ -245,7 +246,8 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
           </>
         )
       )}
-    </dialog>
+    </dialog>,
+    document.getElementById("root")!
   );
 }
 
