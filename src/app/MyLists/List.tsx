@@ -119,7 +119,7 @@ function List({ movies, name }: Props) {
               >
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
-              <div className="w-16 bg-gradient-slider absolute left-0 bottom-0 z-20 pointer-events-none rotate-180 h-40"></div>
+              <div className="w-16 bg-gradient-slider absolute left-0 bottom-0 z-20 pointer-events-none rotate-180 h-44"></div>
             </>
           )}
           {showNextButton && (
@@ -130,7 +130,7 @@ function List({ movies, name }: Props) {
               >
                 <i className="fa-solid fa-chevron-right"></i>
               </button>
-              <div className="w-16 bg-gradient-slider absolute right-0 bottom-0 z-20 pointer-events-none h-40"></div>
+              <div className="w-16 bg-gradient-slider absolute right-0 bottom-0 z-20 pointer-events-none h-44"></div>
             </>
           )}
 
