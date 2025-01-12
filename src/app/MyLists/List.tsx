@@ -99,7 +99,7 @@ function List({ movies, name }: Props) {
         <SliderListSkeleton />
       ) : (
         <div className="w-full flex flex-col z-10 gap-2 relative">
-          <div className="flex gap-2 justify-between px-16">
+          <div className="flex gap-2 justify-between px-16 mb-2 h-8">
             <h2 className="font-semibold text-xl text-neutral-100">{name}</h2>
             {name !== "Favourites" && (
               <button
