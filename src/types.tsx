@@ -13,7 +13,7 @@ interface Movie {
 
 interface List {
   name: string;
-  movies: number[] | [];
+  movies: number[];
 }
 
 export type { Movie, List };

@@ -4,6 +4,7 @@ import Navbar from "./Navbar/Navbar.tsx";
 import Home from "./Home/Home.tsx";
 import Footer from "../components/Footer.tsx";
 import MyLists from "./MyLists/MyLists.tsx";
+import InfoModal from "../components/InfoModal.tsx";
 
 import { List } from "../types.tsx";
 
@@ -34,11 +35,39 @@ function App() {
     });
   };
 
+  const addMovieToList = (listName: string, movieId: number) => {
+    setLists((prevValue) => {
+      const updatedLists = prevValue.map((list) =>
+        list.name === listName
+          ? { ...list, movies: [...list.movies, movieId] }
+          : list
+      );
+
+      localStorage.setItem("lists", JSON.stringify(updatedLists));
+      return updatedLists;
+    });
+  };
+
+  const removeMovieFromList = (listName: string, movieId: number) => {
+    setLists((prevValue) => {
+      const updatedLists = prevValue.map((list) =>
+        list.name === listName
+          ? { ...list, movies: [...list.movies].filter((id) => id !== movieId) }
+          : list
+      );
+
+      localStorage.setItem("lists", JSON.stringify(updatedLists));
+      return updatedLists;
+    });
+  };
+
   const ctxValue = {
-    lists: lists,
-    selectedMovieId: selectedMovieId,
+    lists,
+    selectedMovieId,
     setLists: updateLists,
-    setSelectedMovieId: setSelectedMovieId,
+    setSelectedMovieId,
+    addMovieToList,
+    removeMovieFromList,
   };
 
   useEffect(() => {
@@ -59,6 +88,9 @@ function App() {
         <Route path="/myLists" element={<MyLists />} />
       </Routes>
       <Footer></Footer>
+      {selectedMovieId > 0 && (
+        <InfoModal openModal={!!selectedMovieId}></InfoModal>
+      )}
     </MainStore.Provider>
   );
 }

@@ -7,6 +7,8 @@ interface Context {
   selectedMovieId: number;
   setLists: (listName: string) => void;
   setSelectedMovieId: (id: number) => void;
+  addMovieToList: (listName: string, movieId: number) => void;
+  removeMovieFromList: (listName: string, movieId: number) => void;
 }
 
 export const MainStore = createContext<Context>({
@@ -14,4 +16,6 @@ export const MainStore = createContext<Context>({
   selectedMovieId: 0,
   setLists: () => {},
   setSelectedMovieId: () => {},
+  addMovieToList: () => {},
+  removeMovieFromList: () => {},
 });

@@ -12,7 +12,7 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.body.scrollTop;
-      setHasBackground(scrollTop > 50);
+      setHasBackground(scrollTop > 20);
     };
 
     window.addEventListener("scroll", handleScroll);

@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { MainStore } from "../../store/MainStore.tsx";
 import axios from "axios";
 
 import SliderList from "../../components/SliderList.tsx";
@@ -11,10 +13,10 @@ import HighligtedMovieSkeleton from "../../components/skeletons/HighlightedMovie
 
 interface Props {
   movies: Movie[];
-  onItemSelect: (index: number) => void;
 }
 
-function HighligtedMovie({ movies, onItemSelect }: Props) {
+function HighligtedMovie({ movies }: Props) {
+  const { setSelectedMovieId } = useContext(MainStore);
   const [highlightedMovieIndex, setHighlightedMovieIndex] = useState(0);
 
   const [isImgLoaded, setIsImgLoaded] = useState(false);
@@ -79,7 +81,9 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
             </button>
             <button
               className="flex items-center justify-center gap-4 font-bold text-neutral-50 bg-neutral-50/30 hover:bg-neutral-50/40 rounded py-3 px-8"
-              onClick={() => onItemSelect(movies[highlightedMovieIndex].id)}
+              onClick={() =>
+                setSelectedMovieId(movies[highlightedMovieIndex].id)
+              }
             >
               <img src={Info} alt="" className="w-6 h-6" />
               More info

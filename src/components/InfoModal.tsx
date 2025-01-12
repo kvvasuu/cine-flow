@@ -12,7 +12,13 @@ interface Props {
 }
 
 function InfoModal({ openModal }: Props) {
-  const { setSelectedMovieId, selectedMovieId } = useContext(MainStore);
+  const {
+    setSelectedMovieId,
+    selectedMovieId,
+    addMovieToList,
+    removeMovieFromList,
+    lists,
+  } = useContext(MainStore);
 
   const [movieData, setMovieData] = useState<Movie | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -113,6 +119,14 @@ function InfoModal({ openModal }: Props) {
     setSelectedMovieId(0);
   };
 
+  const addMovie = () => {
+    addMovieToList("Dupa", selectedMovieId);
+  };
+
+  const removeMovie = () => {
+    removeMovieFromList("Dupa", selectedMovieId);
+  };
+
   return createPortal(
     <dialog
       className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow backdrop:bg-black/50 backdrop:backdrop-blur-[2px]"
@@ -147,17 +161,36 @@ function InfoModal({ openModal }: Props) {
                 <h2 className="text-4xl font-bold text-neutral-50 select-none z-20">
                   {movieData.title}
                 </h2>
-                <a
-                  href={
-                    "https://www.youtube.com/watch?v=" + movieData.trailerKey
-                  }
-                  target="_blank"
-                >
-                  <button className="flex items-center justify-center mt-6 gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
-                    <img src={Play} alt="" className="w-6 h-6" />
-                    Play
-                  </button>
-                </a>
+                <div className="flex gap-6">
+                  <a
+                    href={
+                      "https://www.youtube.com/watch?v=" + movieData.trailerKey
+                    }
+                    target="_blank"
+                  >
+                    <button className="flex items-center justify-center mt-6 gap-4 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200">
+                      <img src={Play} alt="" className="w-6 h-6" />
+                      Play
+                    </button>
+                  </a>
+                  {lists.some((list) =>
+                    list.movies.includes(selectedMovieId)
+                  ) ? (
+                    <button
+                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 bg-neutral-50 text-neutral-900 border-2 border-neutral-50 rounded-full"
+                      onClick={removeMovie}
+                    >
+                      <i className="fa-solid fa-check text-xl"></i>
+                    </button>
+                  ) : (
+                    <button
+                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
+                      onClick={addMovie}
+                    >
+                      <i className="fa-solid fa-plus text-xl"></i>
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="flex mt-16 grow gap-8">
                 <div className="grow">
