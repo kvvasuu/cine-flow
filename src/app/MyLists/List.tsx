@@ -59,7 +59,7 @@ function List({ movies, name }: Props) {
         slider.removeEventListener("scroll", handleScroll);
       };
     }
-  }, []);
+  }, [moviesArray]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +84,7 @@ function List({ movies, name }: Props) {
         <div className="w-full flex flex-col z-10 gap-2 relative">
           <h2 className="font-semibold text-xl text-neutral-100 px-16">
             {name}
+            <button>Delete</button>
           </h2>
 
           {showPrevButton && (

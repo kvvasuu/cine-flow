@@ -120,11 +120,11 @@ function InfoModal({ openModal }: Props) {
   };
 
   const addMovie = () => {
-    addMovieToList("Dupa", selectedMovieId);
+    addMovieToList("Favourites", selectedMovieId);
   };
 
   const removeMovie = () => {
-    removeMovieFromList("Dupa", selectedMovieId);
+    removeMovieFromList("Favourites", selectedMovieId);
   };
 
   return createPortal(

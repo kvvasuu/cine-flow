@@ -33,7 +33,7 @@ function MyLists() {
                 name={list.name}
               ></List>
             ) : (
-              <div className="flex flex-col w-full px-16 gap-1">
+              <div className="flex flex-col w-full px-16 gap-1" key={list.name}>
                 <h2 className="font-semibold text-xl text-neutral-100">
                   {list.name}
                 </h2>
