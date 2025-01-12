@@ -173,9 +173,9 @@ function InfoModal({ openModal }: Props) {
                       Play
                     </button>
                   </a>
-                  {lists.some((list) =>
-                    list.movies.includes(selectedMovieId)
-                  ) ? (
+                  {lists
+                    .find((list) => list.name === "Favourites")
+                    ?.movies.includes(selectedMovieId) ? (
                     <button
                       className="flex items-center justify-center mt-6 font-bold h-12 w-12 bg-neutral-50 text-neutral-900 border-2 border-neutral-50 rounded-full"
                       onClick={removeMovie}
@@ -184,7 +184,7 @@ function InfoModal({ openModal }: Props) {
                     </button>
                   ) : (
                     <button
-                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
+                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 bg-black/50 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
                       onClick={addMovie}
                     >
                       <i className="fa-solid fa-plus text-xl"></i>

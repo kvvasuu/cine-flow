@@ -12,7 +12,7 @@ interface Props {
 }
 
 function List({ movies, name }: Props) {
-  const { setSelectedMovieId } = useContext(MainStore);
+  const { setSelectedMovieId, deleteList } = useContext(MainStore);
 
   const [moviesArray, setMoviesArray] = useState<Movie[]>([]);
 
@@ -78,14 +78,38 @@ function List({ movies, name }: Props) {
 
   return (
     <>
-      {moviesArray.length <= 0 ? (
+      {movies.length <= 0 ? (
+        <div className="w-full flex flex-col gap-2 px-16">
+          <div className="flex  gap-2 justify-between">
+            <h2 className="font-semibold text-xl text-neutral-100">{name}</h2>
+            {name !== "Favourites" && (
+              <button
+                className="text-sm font-semibold text-neutral-100/70 hover:text-neutral-100"
+                onClick={() => deleteList(name)}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+          <p className="text-neutral-400 text-sm">
+            There are no movies in this list yet.
+          </p>
+        </div>
+      ) : moviesArray.length <= 0 ? (
         <SliderListSkeleton />
       ) : (
         <div className="w-full flex flex-col z-10 gap-2 relative">
-          <h2 className="font-semibold text-xl text-neutral-100 px-16">
-            {name}
-            <button>Delete</button>
-          </h2>
+          <div className="flex gap-2 justify-between px-16">
+            <h2 className="font-semibold text-xl text-neutral-100">{name}</h2>
+            {name !== "Favourites" && (
+              <button
+                className="text-sm font-semibold text-neutral-100/70 hover:text-neutral-100"
+                onClick={() => deleteList(name)}
+              >
+                Delete
+              </button>
+            )}
+          </div>
 
           {showPrevButton && (
             <>

@@ -17,6 +17,10 @@ function AddList({ onClose }: Props) {
   };
 
   const addList = () => {
+    if (listName.length <= 0) {
+      return;
+    }
+
     const nameTaken = lists.find(
       (list) => list.name.toUpperCase() === listName.toUpperCase().trim()
     );

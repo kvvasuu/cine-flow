@@ -20,16 +20,28 @@ axios.interceptors.request.use((config) => {
 });
 
 function App() {
-  const [lists, setLists] = useState<List[]>([]);
+  const [lists, setLists] = useState<List[]>([
+    { name: "Favourites", movies: [] },
+  ]);
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
 
   const updateLists = (listName: string) => {
     setLists((prevValue) => {
       const updatedLists = [...prevValue];
-      updatedLists.unshift({
+      updatedLists.push({
         name: listName,
         movies: [],
       });
+      localStorage.setItem("lists", JSON.stringify(updatedLists));
+      return updatedLists;
+    });
+  };
+
+  const deleteList = (listName: string) => {
+    setLists((prevValue) => {
+      const updatedLists = [...prevValue].filter(
+        (list) => list.name !== listName
+      );
       localStorage.setItem("lists", JSON.stringify(updatedLists));
       return updatedLists;
     });
@@ -39,7 +51,7 @@ function App() {
     setLists((prevValue) => {
       const updatedLists = prevValue.map((list) =>
         list.name === listName
-          ? { ...list, movies: [...list.movies, movieId] }
+          ? { ...list, movies: [movieId, ...list.movies] }
           : list
       );
 
@@ -68,6 +80,7 @@ function App() {
     setSelectedMovieId,
     addMovieToList,
     removeMovieFromList,
+    deleteList,
   };
 
   useEffect(() => {
