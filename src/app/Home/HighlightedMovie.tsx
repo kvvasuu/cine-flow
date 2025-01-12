@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import SliderList from "../components/SliderList";
-import { Movie } from "../types";
+import SliderList from "../../components/SliderList.tsx";
+import { Movie } from "../../types.tsx";
 
-import Play from "../assets/icons/Play.png";
-import Info from "../assets/icons/Info.png";
+import Play from "../../assets/icons/Play.png";
+import Info from "../../assets/icons/Info.png";
 
-import HighligtedMovieSkeleton from "../skeletons/HighlightedMovieSkeleton";
+import HighligtedMovieSkeleton from "../../components/skeletons/HighlightedMovieSkeleton.tsx";
 
 interface Props {
   movies: Movie[];
@@ -21,11 +21,6 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
 
   const handleImgLoad = () => {
     setIsImgLoaded(true);
-  };
-
-  const handleMovieClick = (id: number): void => {
-    const movieIndex = movies.findIndex((movie) => movie.id === id);
-    setHighlightedMovieIndex(movieIndex);
   };
 
   const playTrailer = async () => {
@@ -91,11 +86,7 @@ function HighligtedMovie({ movies, onItemSelect }: Props) {
             </button>
           </div>
         </div>
-        <SliderList
-          movies={movies}
-          category="Now playing"
-          onItemSelect={handleMovieClick}
-        ></SliderList>
+        <SliderList movies={movies} category="Now playing"></SliderList>
       </section>
     );
   } else {

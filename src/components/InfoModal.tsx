@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { createPortal } from "react-dom";
+import { MainStore } from "../store/MainStore";
 
 import axios from "axios";
 import { Movie } from "../types";
@@ -7,12 +8,12 @@ import { Movie } from "../types";
 import Play from "../assets/icons/Play.png";
 
 interface Props {
-  movieId: number;
   openModal: boolean;
-  closeModal: () => void;
 }
 
-function InfoModal({ movieId, openModal, closeModal }: Props) {
+function InfoModal({ openModal }: Props) {
+  const { setSelectedMovieId, selectedMovieId } = useContext(MainStore);
+
   const [movieData, setMovieData] = useState<Movie | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(false);
 
@@ -25,7 +26,7 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
   useEffect(() => {
     const fetchData = async () => {
       const movie = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos&language=en-US`
+        `https://api.themoviedb.org/3/movie/${selectedMovieId}?append_to_response=videos&language=en-US`
       );
       const trailerKey = movie.data.videos.results[0].key;
 
@@ -106,6 +107,10 @@ function InfoModal({ movieId, openModal, closeModal }: Props) {
 
   const handleImgLoad = () => {
     setIsImgLoaded(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMovieId(0);
   };
 
   return createPortal(

@@ -11,4 +11,9 @@ interface Movie {
   trailerKey: string;
 }
 
-export type { Movie };
+interface List {
+  name: string;
+  movies: number[] | [];
+}
+
+export type { Movie, List };

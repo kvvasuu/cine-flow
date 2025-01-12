@@ -1,4 +1,4 @@
-import TMDB from "./assets/images/TMDB.svg";
+import TMDB from "./../assets/images/TMDB.svg";
 
 function Footer() {
   return (

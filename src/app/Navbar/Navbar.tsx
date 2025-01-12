@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import SearchBar from "./SearchBar.tsx";
-import ProfileIMG from "../assets/images/ProfileIMG.png";
-import GiftIcon from "../assets/icons/GiftBox.svg";
-import BellIcon from "../assets/icons/NotificationBell.svg";
+import ProfileIMG from "../../assets/images/ProfileIMG.png";
+import GiftIcon from "../../assets/icons/GiftBox.svg";
+import BellIcon from "../../assets/icons/NotificationBell.svg";
 import "./Navbar.css";
 
 function Navbar() {
@@ -38,7 +38,7 @@ function Navbar() {
             <NavLink to="/">Home</NavLink>
             <NavLink to="/shows">TV Shows</NavLink>
             <NavLink to="/movies">Movies</NavLink>
-            <NavLink to="/recent">Recently Added</NavLink>
+            <NavLink to="/myLists">My Lists</NavLink>
           </ol>
         </nav>
       </div>

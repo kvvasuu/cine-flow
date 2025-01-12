@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { MainStore } from "../../store/MainStore.tsx";
 import axios from "axios";
 
-import { Movie } from "../types.tsx";
+import { Movie } from "../../types.tsx";
 
-import SliderList from "../components/SliderList";
+import SliderList from "../../components/SliderList.tsx";
 import HighlightedMovie from "./HighlightedMovie.tsx";
-import InfoModal from "../components/InfoModal.tsx";
-import SliderListSkeleton from "../skeletons/SliderListSkeleton.tsx";
+import InfoModal from "../../components/InfoModal.tsx";
+import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
 function Home() {
+  const { selectedMovieId, setSelectedMovieId } = useContext(MainStore);
+
   const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-
-  const [selectedMovieId, setSelectedMovieId] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,11 +46,7 @@ function Home() {
         ></HighlightedMovie>
 
         {popularMovies.length > 0 ? (
-          <SliderList
-            movies={popularMovies}
-            category="Popular"
-            onItemSelect={(id) => setSelectedMovieId(id)}
-          ></SliderList>
+          <SliderList movies={popularMovies} category="Popular"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
@@ -59,26 +56,13 @@ function Home() {
             movies={topRatedMovies}
             category="Top Rated"
             isTall={true}
-            onItemSelect={(id) => setSelectedMovieId(id)}
           ></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
-
-        {/* <SliderList
-          movies={movies}
-          category="My List"
-          onItemSelect={handleMovieClick}
-        ></SliderList> */}
       </div>
       {selectedMovieId > 0 && (
-        <InfoModal
-          movieId={selectedMovieId}
-          openModal={!!selectedMovieId}
-          closeModal={() => {
-            setSelectedMovieId(0);
-          }}
-        ></InfoModal>
+        <InfoModal openModal={!!selectedMovieId}></InfoModal>
       )}
     </>
   );

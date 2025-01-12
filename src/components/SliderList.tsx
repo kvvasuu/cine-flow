@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from "react";
-
+import { useRef, useState, useEffect, useContext } from "react";
+import { MainStore } from "../store/MainStore.tsx";
 import { Movie } from "../types.tsx";
 
 import SliderListElement from "./SliderListElement.tsx";
@@ -9,10 +9,11 @@ interface Props {
   movies: Movie[];
   category: string;
   isTall?: boolean;
-  onItemSelect: (index: number) => void;
 }
 
-function SliderList({ movies, category, isTall, onItemSelect }: Props) {
+function SliderList({ movies, category, isTall }: Props) {
+  const { setSelectedMovieId } = useContext(MainStore);
+
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const [showPrevButton, setShowPrevButton] = useState(false);
@@ -112,13 +113,13 @@ function SliderList({ movies, category, isTall, onItemSelect }: Props) {
             <SliderListElementTall
               movie={el}
               key={el.id}
-              onClick={onItemSelect}
+              onClick={(id) => setSelectedMovieId(id)}
             ></SliderListElementTall>
           ) : (
             <SliderListElement
               movie={el}
               key={el.id}
-              onClick={onItemSelect}
+              onClick={(id) => setSelectedMovieId(id)}
             ></SliderListElement>
           );
         })}

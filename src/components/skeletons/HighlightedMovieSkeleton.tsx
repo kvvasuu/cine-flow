@@ -1,4 +1,4 @@
-import SliderListSkeleton from "../skeletons/SliderListSkeleton";
+import SliderListSkeleton from "../skeletons/SliderListSkeleton.tsx";
 
 function HighligtedMovieSkeleton() {
   return (
