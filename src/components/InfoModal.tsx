@@ -184,7 +184,7 @@ function InfoModal({ openModal }: Props) {
                     </button>
                   ) : (
                     <button
-                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 bg-black/50 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
+                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
                       onClick={addMovie}
                     >
                       <i className="fa-solid fa-plus text-xl"></i>

@@ -29,7 +29,7 @@ function MyLists() {
             <List key={list.name} movies={list.movies} name={list.name}></List>
           ))}
         <button
-          className="px-24 pt-10 pb-6 flex flex-col items-center justify-center gap-4 text-neutral-400 hover:text-neutral-50 transition-all border-2 border-neutral-400 hover:border-neutral-50 rounded-3xl"
+          className="px-24 pt-10 pb-6 flex flex-col items-center mt-8 justify-center gap-4 text-neutral-400 hover:text-neutral-50 transition-all border-2 border-neutral-400 hover:border-neutral-50 rounded-3xl"
           onClick={() => setIsModalVisible(true)}
         >
           <i className="fa-solid fa-plus text-5xl"></i>
