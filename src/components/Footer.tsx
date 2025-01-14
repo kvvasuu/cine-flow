@@ -1,6 +1,6 @@
 import TMDB from "./../assets/images/TMDB.svg";
 
-function Footer() {
+export default function Footer() {
   return (
     <footer className="w-full flex flex-col justify-end max-w-5xl px-16 py-4 mx-auto gap-4">
       <div className="flex justify-start items-center gap-4 text-2xl text-neutral-500">
@@ -75,5 +75,3 @@ function Footer() {
     </footer>
   );
 }
-
-export default Footer;

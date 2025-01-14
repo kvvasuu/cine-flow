@@ -1,6 +1,6 @@
 import SliderListSkeleton from "../skeletons/SliderListSkeleton.tsx";
 
-function HighligtedMovieSkeleton() {
+export default function HighligtedMovieSkeleton() {
   return (
     <section className="flex flex-col justify-end w-full h-[60rem] relative shrink-0 overflow-hidden">
       <div className="w-full min-h-[60rem] absolute top-0 left-0 pointer-events-none bg-neutral-800"></div>
@@ -19,5 +19,3 @@ function HighligtedMovieSkeleton() {
     </section>
   );
 }
-
-export default HighligtedMovieSkeleton;

@@ -4,7 +4,7 @@ import { MainStore } from "../../store/MainStore.tsx";
 import AddList from "./AddList.tsx";
 import List from "./List.tsx";
 
-function MyLists() {
+export default function MyLists() {
   const { lists } = useContext(MainStore);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -42,5 +42,3 @@ function MyLists() {
     </>
   );
 }
-
-export default MyLists;

@@ -5,7 +5,7 @@ interface Props {
   onClose: () => void;
 }
 
-function AddList({ onClose }: Props) {
+export default function AddList({ onClose }: Props) {
   const { setLists, lists } = useContext(MainStore);
 
   const [isTaken, setIsTaken] = useState(false);
@@ -88,5 +88,3 @@ function AddList({ onClose }: Props) {
     </div>
   );
 }
-
-export default AddList;

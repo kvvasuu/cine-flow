@@ -4,7 +4,7 @@ interface Props {
   onClick: (index: number) => void;
 }
 
-function SliderListElementTall({ movie, onClick }: Props) {
+export default function SliderListElementTall({ movie, onClick }: Props) {
   return (
     <div
       className="w-[284px] h-[30rem] flex flex-col relative shrink-0 overflow-hidden rounded group cursor-pointer snap-start"
@@ -23,5 +23,3 @@ function SliderListElementTall({ movie, onClick }: Props) {
     </div>
   );
 }
-
-export default SliderListElementTall;

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router";
 import { useContext } from "react";
 import Navbar from "./Navbar/Navbar.tsx";
 import Home from "./Home/Home.tsx";
+import Movies from "./Movies/Movies.tsx";
 import Footer from "../components/Footer.tsx";
 import MyLists from "./MyLists/MyLists.tsx";
 import InfoModal from "../components/InfoModal.tsx";
@@ -17,7 +18,7 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-function App() {
+export default function App() {
   const { selectedMovieId } = useContext(MainStore);
 
   return (
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shows" element={<Home />} />
-        <Route path="/movies" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
         <Route path="/recent" element={<Home />} />
         <Route path="/myLists" element={<MyLists />} />
       </Routes>
@@ -37,5 +38,3 @@ function App() {
     </>
   );
 }
-
-export default App;

@@ -11,7 +11,7 @@ interface Props {
   isTall?: boolean;
 }
 
-function SliderList({ movies, category, isTall }: Props) {
+export default function SliderList({ movies, category, isTall }: Props) {
   const { setSelectedMovieId } = useContext(MainStore);
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
@@ -127,5 +127,3 @@ function SliderList({ movies, category, isTall }: Props) {
     </div>
   );
 }
-
-export default SliderList;

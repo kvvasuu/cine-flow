@@ -1,4 +1,4 @@
-function SliderListSkeleton() {
+export default function SliderListSkeleton() {
   return (
     <div className="w-full flex flex-col z-10 gap-2 relative animate-pulse">
       <div className="px-16 mb-2">
@@ -17,5 +17,3 @@ function SliderListSkeleton() {
     </div>
   );
 }
-
-export default SliderListSkeleton;

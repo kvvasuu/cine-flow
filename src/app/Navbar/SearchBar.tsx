@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 
 import SearchIcon from "../../assets/icons/Search.svg";
 
-function SearchBar() {
+export default function SearchBar() {
   const [isVisible, setIsVisible] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -33,5 +33,3 @@ function SearchBar() {
     </div>
   );
 }
-
-export default SearchBar;

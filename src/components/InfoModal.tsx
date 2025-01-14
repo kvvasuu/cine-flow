@@ -2,6 +2,8 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { createPortal } from "react-dom";
 import { MainStore } from "../store/MainStore";
 
+import Placeholder from "../assets/images/no-img-placeholder.png";
+
 import axios from "axios";
 import { Movie } from "../types";
 
@@ -11,7 +13,7 @@ interface Props {
   openModal: boolean;
 }
 
-function InfoModal({ openModal }: Props) {
+export default function InfoModal({ openModal }: Props) {
   const {
     setSelectedMovieId,
     selectedMovieId,
@@ -146,7 +148,10 @@ function InfoModal({ openModal }: Props) {
             </button>
             <img
               src={
-                "https://image.tmdb.org/t/p/original" + movieData.backdrop_path
+                movieData.backdrop_path
+                  ? "https://image.tmdb.org/t/p/original" +
+                    movieData.backdrop_path
+                  : Placeholder
               }
               alt="Movie poster"
               className={
@@ -215,7 +220,7 @@ function InfoModal({ openModal }: Props) {
                     </div>
                   </div>
 
-                  <article className="text-neutral-50">
+                  <article className="text-neutral-50 h-44 overflow-y-auto scrollbar">
                     {movieData.overview}
                   </article>
                 </div>
@@ -288,5 +293,3 @@ function InfoModal({ openModal }: Props) {
     document.getElementById("root")!
   );
 }
-
-export default InfoModal;

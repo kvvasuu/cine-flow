@@ -11,7 +11,7 @@ interface Props {
   name: string;
 }
 
-function List({ movies, name }: Props) {
+export default function List({ movies, name }: Props) {
   const { setSelectedMovieId, deleteList } = useContext(MainStore);
 
   const [moviesArray, setMoviesArray] = useState<Movie[]>([]);
@@ -153,5 +153,3 @@ function List({ movies, name }: Props) {
     </>
   );
 }
-
-export default List;

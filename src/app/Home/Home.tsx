@@ -8,7 +8,7 @@ import SliderList from "../../components/SliderList.tsx";
 import HighlightedMovie from "./HighlightedMovie.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
-function Home() {
+export default function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
@@ -19,7 +19,7 @@ function Home() {
         const [nowPlayingResponse, topRatedResponse, popularResponse] =
           await Promise.all([
             axios.get(
-              "https://api.themoviedb.org/3/movie/now_playing?append_to_response=videos&language=en-US&page=1&region=us"
+              "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&region=us"
             ),
             axios.get(
               "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&region=us"
@@ -64,5 +64,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

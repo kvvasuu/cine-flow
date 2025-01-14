@@ -6,7 +6,7 @@ import GiftIcon from "../../assets/icons/GiftBox.svg";
 import BellIcon from "../../assets/icons/NotificationBell.svg";
 import "./Navbar.css";
 
-function Navbar() {
+export default function Navbar() {
   const [hasBackground, setHasBackground] = useState(false);
 
   useEffect(() => {
@@ -14,6 +14,8 @@ function Navbar() {
       const scrollTop = window.scrollY || document.body.scrollTop;
       setHasBackground(scrollTop > 20);
     };
+
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -61,5 +63,3 @@ function Navbar() {
     </header>
   );
 }
-
-export default Navbar;

@@ -15,7 +15,7 @@ interface Props {
   movies: Movie[];
 }
 
-function HighligtedMovie({ movies }: Props) {
+export default function HighligtedMovie({ movies }: Props) {
   const { setSelectedMovieId } = useContext(MainStore);
   const [highlightedMovieIndex, setHighlightedMovieIndex] = useState(0);
 
@@ -97,5 +97,3 @@ function HighligtedMovie({ movies }: Props) {
     return <HighligtedMovieSkeleton></HighligtedMovieSkeleton>;
   }
 }
-
-export default HighligtedMovie;
