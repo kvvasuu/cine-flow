@@ -7,45 +7,39 @@ import { Movie } from "../../types.tsx";
 import SliderList from "../../components/SliderList.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
-export default function Movies() {
-  const [actionMovies, setActionMovies] = useState<Movie[]>([]);
-  const [comedyMovies, setComedyMovies] = useState<Movie[]>([]);
-  const [fantasyMovies, setFantasyMovies] = useState<Movie[]>([]);
-  const [romanceMovies, setRomanceMovies] = useState<Movie[]>([]);
-  const [horrorMovies, setHorrorMovies] = useState<Movie[]>([]);
+export default function TVShows() {
+  const [airingToday, setAiringToday] = useState<Movie[]>([]);
+  const [onTheAir, setOnTheAir] = useState<Movie[]>([]);
+  const [popular, setPopular] = useState<Movie[]>([]);
+  const [topRated, setTopRated] = useState<Movie[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [
-          actionResponse,
-          comedyResponse,
-          fantasyResponse,
-          romanceResponse,
-          horrorResponse,
+          airingResponse,
+          onTheAirResponse,
+          popularResponse,
+          topRatedResponse,
         ] = await Promise.all([
           axios.get(
-            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=28"
+            "https://api.themoviedb.org/3/tv/airing_today?language=en-US&page=1"
           ),
           axios.get(
-            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=2&sort_by=popularity.desc&with_genres=35"
+            "https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=2"
           ),
           axios.get(
-            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=3&sort_by=popularity.desc&with_genres=14"
+            "https://api.themoviedb.org/3/tv/popular?language=en-US&page=3"
           ),
           axios.get(
-            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=4&sort_by=popularity.desc&with_genres=10749"
-          ),
-          axios.get(
-            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=5&sort_by=popularity.desc&with_genres=27"
+            "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1"
           ),
         ]);
 
-        setActionMovies(actionResponse.data.results);
-        setComedyMovies(comedyResponse.data.results);
-        setFantasyMovies(fantasyResponse.data.results);
-        setRomanceMovies(romanceResponse.data.results);
-        setHorrorMovies(horrorResponse.data.results);
+        setAiringToday(airingResponse.data.results);
+        setOnTheAir(onTheAirResponse.data.results);
+        setPopular(popularResponse.data.results);
+        setTopRated(topRatedResponse.data.results);
       } catch (error) {
         console.error("Error fetching movies:", error);
       }
@@ -57,32 +51,26 @@ export default function Movies() {
   return (
     <>
       <div className="w-full pb-8 mt-20 flex flex-col gap-8">
-        {actionMovies.length > 0 ? (
-          <SliderList movies={actionMovies} category="Action"></SliderList>
+        {airingToday.length > 0 ? (
+          <SliderList movies={airingToday} category="Airing Today"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
-        {comedyMovies.length > 0 ? (
-          <SliderList movies={comedyMovies} category="Comedy"></SliderList>
+        {onTheAir.length > 0 ? (
+          <SliderList movies={onTheAir} category="On The Air"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
-        {fantasyMovies.length > 0 ? (
-          <SliderList movies={fantasyMovies} category="Fantasy"></SliderList>
+        {popular.length > 0 ? (
+          <SliderList movies={popular} category="Popular"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
-        {romanceMovies.length > 0 ? (
-          <SliderList movies={romanceMovies} category="Romance"></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
-
-        {horrorMovies.length > 0 ? (
-          <SliderList movies={horrorMovies} category="Horror"></SliderList>
+        {topRated.length > 0 ? (
+          <SliderList movies={topRated} category="Top Rated"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}

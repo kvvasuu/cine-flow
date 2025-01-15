@@ -6,6 +6,7 @@ import Movies from "./Movies/Movies.tsx";
 import Footer from "../components/Footer.tsx";
 import MyLists from "./MyLists/MyLists.tsx";
 import InfoModal from "../components/InfoModal.tsx";
+import TVShows from "./TVShows/TVShows.tsx";
 
 import axios from "axios";
 
