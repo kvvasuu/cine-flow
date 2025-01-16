@@ -1,25 +1,29 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode, useRef } from "react";
 
 import { List } from "../types";
 
 interface Context {
   lists: List[];
   selectedMovieId: number;
+  isTVSeries: boolean;
   setLists: (listName: string) => void;
   deleteList: (listName: string) => void;
   setSelectedMovieId: (id: number) => void;
   addMovieToList: (listName: string, movieId: number) => void;
   removeMovieFromList: (listName: string, movieId: number) => void;
+  selectItem: (type: string, id: number) => void;
 }
 
 export const MainStore = createContext<Context>({
   lists: [],
   selectedMovieId: 0,
+  isTVSeries: false,
   setLists: () => {},
   deleteList: () => {},
   setSelectedMovieId: () => {},
   addMovieToList: () => {},
   removeMovieFromList: () => {},
+  selectItem: () => {},
 });
 
 export default function MainStoreProvider({
@@ -31,6 +35,7 @@ export default function MainStoreProvider({
     { name: "Favourites", movies: [] },
   ]);
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
+  const isTVSeries = useRef(false);
 
   const updateLists = (listName: string) => {
     setLists((prevValue) => {
@@ -80,14 +85,23 @@ export default function MainStoreProvider({
     });
   };
 
+  const selectItem = (type: string, id: number) => {
+    setSelectedMovieId(id);
+    type === "movie"
+      ? (isTVSeries.current = false)
+      : (isTVSeries.current = true);
+  };
+
   const ctxValue = {
     lists,
     selectedMovieId,
+    isTVSeries: isTVSeries.current,
     setLists: updateLists,
     setSelectedMovieId,
     addMovieToList,
     removeMovieFromList,
     deleteList,
+    selectItem,
   };
 
   useEffect(() => {

@@ -52,25 +52,29 @@ export default function TVShows() {
     <>
       <div className="w-full pb-8 mt-20 flex flex-col gap-8">
         {airingToday.length > 0 ? (
-          <SliderList movies={airingToday} category="Airing Today"></SliderList>
+          <SliderList
+            isTV
+            movies={airingToday}
+            category="Airing Today"
+          ></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
         {onTheAir.length > 0 ? (
-          <SliderList movies={onTheAir} category="On The Air"></SliderList>
+          <SliderList isTV movies={onTheAir} category="On The Air"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
         {popular.length > 0 ? (
-          <SliderList movies={popular} category="Popular"></SliderList>
+          <SliderList isTV movies={popular} category="Popular"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}
 
         {topRated.length > 0 ? (
-          <SliderList movies={topRated} category="Top Rated"></SliderList>
+          <SliderList isTV movies={topRated} category="Top Rated"></SliderList>
         ) : (
           <SliderListSkeleton></SliderListSkeleton>
         )}

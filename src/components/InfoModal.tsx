@@ -20,6 +20,7 @@ export default function InfoModal({ openModal }: Props) {
     addMovieToList,
     removeMovieFromList,
     lists,
+    isTVSeries,
   } = useContext(MainStore);
 
   const [movieData, setMovieData] = useState<Movie | null>(null);
@@ -33,10 +34,12 @@ export default function InfoModal({ openModal }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const movie = await axios.get(
-        `https://api.themoviedb.org/3/movie/${selectedMovieId}?append_to_response=videos&language=en-US`
-      );
-      const trailerKey = movie.data.videos.results[0].key;
+      const requestURL = `https://api.themoviedb.org/3/${
+        (isTVSeries ? "tv/" : "movie/") + selectedMovieId
+      }?append_to_response=videos&language=en-US`;
+
+      const movie = await axios.get(requestURL);
+      const trailerKey = movie.data.videos.results[0]?.key;
 
       const {
         id,
@@ -62,6 +65,8 @@ export default function InfoModal({ openModal }: Props) {
         runtime,
         trailerKey,
       });
+
+      console.log(movie.data);
     };
 
     const loaderTimeout = setTimeout(() => {
@@ -213,7 +218,7 @@ export default function InfoModal({ openModal }: Props) {
                       {Math.round(movieData.vote_average * 100) / 100}
                     </div>
                     <div className="text-lg text-neutral-50 py-1">
-                      {movieData.release_date.slice(0, 4)}
+                      {movieData.release_date?.slice(0, 4) || ""}
                     </div>
                     <div className="text-lg text-neutral-50 py-1">
                       {movieData.runtime} min.

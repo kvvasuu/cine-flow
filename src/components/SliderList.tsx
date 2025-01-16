@@ -9,10 +9,11 @@ interface Props {
   movies: Movie[];
   category: string;
   isTall?: boolean;
+  isTV?: boolean;
 }
 
-export default function SliderList({ movies, category, isTall }: Props) {
-  const { setSelectedMovieId } = useContext(MainStore);
+export default function SliderList({ movies, category, isTall, isTV }: Props) {
+  const { selectItem } = useContext(MainStore);
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
@@ -58,6 +59,12 @@ export default function SliderList({ movies, category, isTall }: Props) {
       };
     }
   }, []);
+
+  const select = (id: number) => {
+    let type = "movie";
+    isTV ? (type = "tv") : "movie";
+    selectItem(type, id);
+  };
 
   return (
     <div className="w-full flex flex-col z-10 gap-2 relative">
@@ -113,13 +120,13 @@ export default function SliderList({ movies, category, isTall }: Props) {
             <SliderListElementTall
               movie={el}
               key={el.id}
-              onClick={(id) => setSelectedMovieId(id)}
+              onClick={(id) => select(id)}
             ></SliderListElementTall>
           ) : (
             <SliderListElement
               movie={el}
               key={el.id}
-              onClick={(id) => setSelectedMovieId(id)}
+              onClick={(id) => select(id)}
             ></SliderListElement>
           );
         })}
