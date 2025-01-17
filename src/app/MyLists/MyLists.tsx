@@ -5,7 +5,7 @@ import AddList from "./AddList.tsx";
 import List from "./List.tsx";
 
 export default function MyLists() {
-  const { lists } = useContext(MainStore);
+  const { listState } = useContext(MainStore);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
@@ -17,15 +17,15 @@ export default function MyLists() {
   return (
     <>
       <div className="w-full min-h-[calc(100vh-14rem)] pb-8 flex flex-col items-center justify-start gap-8 mt-20">
-        {lists.length === 0 && (
+        {listState.length === 0 && (
           <div className="w-full h-40 mt-16 flex items-center justify-center">
             <h2 className="font-semibold text-xl text-neutral-500 px-16 select-none">
               There are no lists yet.
             </h2>
           </div>
         )}
-        {lists.length > 0 &&
-          lists.map((list) => (
+        {listState.length > 0 &&
+          listState.map((list) => (
             <List key={list.name} movies={list.movies} name={list.name}></List>
           ))}
         <button

@@ -17,10 +17,9 @@ export default function InfoModal({ openModal }: Props) {
   const {
     setSelectedMovieId,
     selectedMovieId,
-    addMovieToList,
-    removeMovieFromList,
-    lists,
+    listState,
     isTVSeries,
+    listDispatch,
   } = useContext(MainStore);
 
   const [movieData, setMovieData] = useState<Movie | null>(null);
@@ -127,11 +126,23 @@ export default function InfoModal({ openModal }: Props) {
   };
 
   const addMovie = () => {
-    addMovieToList("Favourites", selectedMovieId);
+    listDispatch({
+      type: "addMovie",
+      payload: {
+        listName: "Favourites",
+        movieId: selectedMovieId,
+      },
+    });
   };
 
   const removeMovie = () => {
-    removeMovieFromList("Favourites", selectedMovieId);
+    listDispatch({
+      type: "deleteMovie",
+      payload: {
+        listName: "Favourites",
+        movieId: selectedMovieId,
+      },
+    });
   };
 
   return createPortal(
@@ -183,7 +194,7 @@ export default function InfoModal({ openModal }: Props) {
                       Play
                     </button>
                   </a>
-                  {lists
+                  {listState
                     .find((list) => list.name === "Favourites")
                     ?.movies.includes(selectedMovieId) ? (
                     <button

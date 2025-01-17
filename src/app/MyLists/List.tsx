@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function List({ movies, name }: Props) {
-  const { setSelectedMovieId, deleteList } = useContext(MainStore);
+  const { setSelectedMovieId, listDispatch } = useContext(MainStore);
 
   const [moviesArray, setMoviesArray] = useState<Movie[]>([]);
 
@@ -75,6 +75,15 @@ export default function List({ movies, name }: Props) {
 
     fetchData();
   }, [movies]);
+
+  const deleteList = (name: string) => {
+    listDispatch({
+      type: "deleteList",
+      payload: {
+        listName: name,
+      },
+    });
+  };
 
   return (
     <>

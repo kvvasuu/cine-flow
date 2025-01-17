@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function AddList({ onClose }: Props) {
-  const { setLists, lists } = useContext(MainStore);
+  const { listState, listDispatch } = useContext(MainStore);
 
   const [isTaken, setIsTaken] = useState(false);
   const [listName, setListName] = useState("");
@@ -21,7 +21,7 @@ export default function AddList({ onClose }: Props) {
       return;
     }
 
-    const nameTaken = lists.find(
+    const nameTaken = listState.find(
       (list) => list.name.toUpperCase() === listName.toUpperCase().trim()
     );
 
@@ -30,7 +30,13 @@ export default function AddList({ onClose }: Props) {
       return;
     }
 
-    setLists(listName.trim());
+    listDispatch({
+      type: "addList",
+      payload: {
+        listName: listName.trim(),
+      },
+    });
+
     closeModal();
   };
 

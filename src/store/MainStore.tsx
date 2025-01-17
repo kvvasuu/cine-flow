@@ -1,29 +1,65 @@
-import { createContext, useState, useEffect, ReactNode, useRef } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useRef,
+  useReducer,
+  Dispatch,
+} from "react";
 
 import { List } from "../types";
 
+type Action =
+  | {
+      type: "addList";
+      payload: {
+        listName: string;
+      };
+    }
+  | {
+      type: "deleteList";
+      payload: {
+        listName: string;
+      };
+    }
+  | {
+      type: "addMovie";
+      payload: {
+        listName: string;
+        movieId: number;
+      };
+    }
+  | {
+      type: "deleteMovie";
+      payload: {
+        listName: string;
+        movieId: number;
+      };
+    }
+  | {
+      type: "initialSet";
+      payload: {
+        lists: List[];
+      };
+    };
+
 interface Context {
-  lists: List[];
+  listState: List[];
   selectedMovieId: number;
   isTVSeries: boolean;
-  setLists: (listName: string) => void;
-  deleteList: (listName: string) => void;
   setSelectedMovieId: (id: number) => void;
-  addMovieToList: (listName: string, movieId: number) => void;
-  removeMovieFromList: (listName: string, movieId: number) => void;
   selectItem: (type: string, id: number) => void;
+  listDispatch: Dispatch<Action>; // Poprawiono typ
 }
 
 export const MainStore = createContext<Context>({
-  lists: [],
+  listState: [],
   selectedMovieId: 0,
   isTVSeries: false,
-  setLists: () => {},
-  deleteList: () => {},
   setSelectedMovieId: () => {},
-  addMovieToList: () => {},
-  removeMovieFromList: () => {},
   selectItem: () => {},
+  listDispatch: () => {}, // Typ zgodny z Dispatch<Action>
 });
 
 export default function MainStoreProvider({
@@ -31,83 +67,92 @@ export default function MainStoreProvider({
 }: {
   children: ReactNode;
 }) {
-  const [lists, setLists] = useState<List[]>([
-    { name: "Favourites", movies: [] },
-  ]);
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
   const isTVSeries = useRef(false);
 
-  const updateLists = (listName: string) => {
-    setLists((prevValue) => {
-      const updatedLists = [...prevValue];
-      updatedLists.push({
-        name: listName,
-        movies: [],
-      });
-      localStorage.setItem("lists", JSON.stringify(updatedLists));
-      return updatedLists;
-    });
+  const listReducer = (state: List[], action: Action): List[] => {
+    const { type, payload } = action;
+
+    switch (type) {
+      case "initialSet":
+        return payload.lists;
+
+      case "addList":
+        const addedList = [
+          ...state,
+          {
+            name: payload.listName,
+            movies: [],
+          },
+        ];
+        localStorage.setItem("lists", JSON.stringify(addedList));
+        return addedList;
+
+      case "deleteList":
+        const deletedList = state.filter(
+          (list) => list.name !== payload.listName
+        );
+        localStorage.setItem("lists", JSON.stringify(deletedList));
+        return deletedList;
+
+      case "addMovie":
+        const addedMovie = state.map((list) =>
+          list.name === payload.listName
+            ? { ...list, movies: [payload.movieId, ...list.movies] }
+            : list
+        );
+        localStorage.setItem("lists", JSON.stringify(addedMovie));
+        return addedMovie;
+
+      case "deleteMovie":
+        const deletedMovie = state.map((list) =>
+          list.name === payload.listName
+            ? {
+                ...list,
+                movies: list.movies.filter((id) => id !== payload.movieId),
+              }
+            : list
+        );
+        localStorage.setItem("lists", JSON.stringify(deletedMovie));
+        return deletedMovie;
+
+      default:
+        return state;
+    }
   };
 
-  const deleteList = (listName: string) => {
-    setLists((prevValue) => {
-      const updatedLists = [...prevValue].filter(
-        (list) => list.name !== listName
-      );
-      localStorage.setItem("lists", JSON.stringify(updatedLists));
-      return updatedLists;
-    });
-  };
+  const initialState: List[] = [
+    {
+      name: "Favourites",
+      movies: [],
+    },
+  ];
 
-  const addMovieToList = (listName: string, movieId: number) => {
-    setLists((prevValue) => {
-      const updatedLists = prevValue.map((list) =>
-        list.name === listName
-          ? { ...list, movies: [movieId, ...list.movies] }
-          : list
-      );
-
-      localStorage.setItem("lists", JSON.stringify(updatedLists));
-      return updatedLists;
-    });
-  };
-
-  const removeMovieFromList = (listName: string, movieId: number) => {
-    setLists((prevValue) => {
-      const updatedLists = prevValue.map((list) =>
-        list.name === listName
-          ? { ...list, movies: [...list.movies].filter((id) => id !== movieId) }
-          : list
-      );
-
-      localStorage.setItem("lists", JSON.stringify(updatedLists));
-      return updatedLists;
-    });
-  };
+  const [listState, listDispatch] = useReducer(listReducer, initialState);
 
   const selectItem = (type: string, id: number) => {
     setSelectedMovieId(id);
-    type === "movie"
-      ? (isTVSeries.current = false)
-      : (isTVSeries.current = true);
+    isTVSeries.current = type === "series";
   };
 
   const ctxValue = {
-    lists,
+    listState,
+    listDispatch,
     selectedMovieId,
     isTVSeries: isTVSeries.current,
-    setLists: updateLists,
     setSelectedMovieId,
-    addMovieToList,
-    removeMovieFromList,
-    deleteList,
     selectItem,
   };
 
   useEffect(() => {
     const lists = localStorage.getItem("lists");
     if (lists) {
-      setLists(JSON.parse(lists));
+      listDispatch({
+        type: "initialSet",
+        payload: {
+          lists: JSON.parse(lists),
+        },
+      });
     }
   }, []);
 
