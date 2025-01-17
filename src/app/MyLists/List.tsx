@@ -7,12 +7,13 @@ import SliderListElement from "../../components/SliderListElement.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
 interface Props {
-  movies: number[];
+  movies: { id: number; type: "movie" | "series" }[];
   name: string;
 }
 
 export default function List({ movies, name }: Props) {
-  const { setSelectedMovieId, listDispatch } = useContext(MainStore);
+  const { setSelectedMovieId, setSelectedSeriesId, listDispatch } =
+    useContext(MainStore);
 
   const [moviesArray, setMoviesArray] = useState<Movie[]>([]);
 
@@ -63,14 +64,26 @@ export default function List({ movies, name }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const moviePromises = movies.map((movieId) =>
+      const moviePromises = movies.map((movie) =>
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=videos&language=en-US`
+          `https://api.themoviedb.org/3/${
+            (movie.type === "series" ? "tv/" : "movie/") + movie.id
+          }?append_to_response=videos&language=en-US`
         )
       );
       const movieResponses = await Promise.all(moviePromises);
 
-      setMoviesArray(movieResponses.map((response) => response.data));
+      setMoviesArray(
+        movieResponses.map((response) => {
+          return {
+            ...response.data,
+            title: response.data.name || response.data.title,
+            release_date:
+              response.data.first_air_date || response.data.release_date,
+            type: !!response.data.title ? "movie" : "series",
+          };
+        })
+      );
     };
 
     fetchData();
@@ -83,6 +96,12 @@ export default function List({ movies, name }: Props) {
         listName: name,
       },
     });
+  };
+
+  const selectItem = (movie: Movie) => {
+    movie.type === "series"
+      ? setSelectedSeriesId(movie.id)
+      : setSelectedMovieId(movie.id);
   };
 
   return (
@@ -152,7 +171,7 @@ export default function List({ movies, name }: Props) {
                 <SliderListElement
                   item={movie}
                   key={movie.id}
-                  onClick={(id) => setSelectedMovieId(id)}
+                  onClick={() => selectItem(movie)}
                 ></SliderListElement>
               );
             })}

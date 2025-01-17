@@ -9,11 +9,12 @@ interface Movie {
   genres: { id: string; name: string }[];
   runtime: number;
   trailerKey: string;
+  type?: "movie" | "series";
 }
 
 interface List {
   name: string;
-  movies: number[];
+  movies: { id: number; type: "movie" | "series" }[];
 }
 
 export type { Movie, List };

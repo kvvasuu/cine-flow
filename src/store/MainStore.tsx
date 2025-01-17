@@ -26,7 +26,7 @@ type Action =
       type: "addMovie";
       payload: {
         listName: string;
-        movieId: number;
+        movie: { id: number; type: "movie" | "series" };
       };
     }
   | {
@@ -97,7 +97,7 @@ export default function MainStoreProvider({
       case "addMovie":
         const addedMovie = state.map((list) =>
           list.name === payload.listName
-            ? { ...list, movies: [payload.movieId, ...list.movies] }
+            ? { ...list, movies: [payload.movie, ...list.movies] }
             : list
         );
         localStorage.setItem("lists", JSON.stringify(addedMovie));
@@ -108,7 +108,9 @@ export default function MainStoreProvider({
           list.name === payload.listName
             ? {
                 ...list,
-                movies: list.movies.filter((id) => id !== payload.movieId),
+                movies: list.movies.filter(
+                  (movie) => movie.id !== payload.movieId
+                ),
               }
             : list
         );

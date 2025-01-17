@@ -158,7 +158,10 @@ export default function MovieModal({ openModal }: Props) {
       type: "addMovie",
       payload: {
         listName: "Favourites",
-        movieId: selectedMovieId,
+        movie: {
+          id: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
+          type: selectedMovieId > 0 ? "movie" : "series",
+        },
       },
     });
   };
@@ -168,7 +171,7 @@ export default function MovieModal({ openModal }: Props) {
       type: "deleteMovie",
       payload: {
         listName: "Favourites",
-        movieId: selectedMovieId,
+        movieId: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
       },
     });
   };
@@ -224,7 +227,10 @@ export default function MovieModal({ openModal }: Props) {
                   </a>
                   {listState
                     .find((list) => list.name === "Favourites")
-                    ?.movies.includes(selectedMovieId) ? (
+                    ?.movies.some(
+                      (el) =>
+                        el.id === selectedMovieId || el.id === selectedSeriesId
+                    ) ? (
                     <button
                       className="flex items-center justify-center mt-6 font-bold h-12 w-12 bg-neutral-50 text-neutral-900 border-2 border-neutral-50 rounded-full"
                       onClick={removeMovie}
