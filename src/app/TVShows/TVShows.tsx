@@ -45,9 +45,33 @@ export default function TVShows() {
             };
           })
         );
-        setOnTheAir(onTheAirResponse.data.results);
-        setPopular(popularResponse.data.results);
-        setTopRated(topRatedResponse.data.results);
+        setOnTheAir(
+          onTheAirResponse.data.results.map((el: any) => {
+            return {
+              ...el,
+              title: el.name,
+              release_date: el.first_air_date,
+            };
+          })
+        );
+        setPopular(
+          popularResponse.data.results.map((el: any) => {
+            return {
+              ...el,
+              title: el.name,
+              release_date: el.first_air_date,
+            };
+          })
+        );
+        setTopRated(
+          topRatedResponse.data.results.map((el: any) => {
+            return {
+              ...el,
+              title: el.name,
+              release_date: el.first_air_date,
+            };
+          })
+        );
       } catch (error) {
         console.error("Error fetching movies:", error);
       }
