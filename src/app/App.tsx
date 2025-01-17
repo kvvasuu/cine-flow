@@ -5,7 +5,7 @@ import Home from "./Home/Home.tsx";
 import Movies from "./Movies/Movies.tsx";
 import Footer from "../components/Footer.tsx";
 import MyLists from "./MyLists/MyLists.tsx";
-import InfoModal from "../components/InfoModal.tsx";
+import MovieModal from "../components/MovieModal.tsx";
 import TVShows from "./TVShows/TVShows.tsx";
 
 import axios from "axios";
@@ -20,7 +20,7 @@ axios.interceptors.request.use((config) => {
 });
 
 export default function App() {
-  const { selectedMovieId } = useContext(MainStore);
+  const { selectedMovieId, selectedSeriesId } = useContext(MainStore);
 
   return (
     <>
@@ -34,7 +34,10 @@ export default function App() {
       </Routes>
       <Footer></Footer>
       {selectedMovieId > 0 && (
-        <InfoModal openModal={!!selectedMovieId}></InfoModal>
+        <MovieModal openModal={!!selectedMovieId}></MovieModal>
+      )}
+      {selectedSeriesId > 0 && (
+        <MovieModal openModal={!!selectedSeriesId}></MovieModal>
       )}
     </>
   );

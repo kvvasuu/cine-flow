@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function HighligtedMovie({ movies }: Props) {
-  const { selectItem } = useContext(MainStore);
+  const { setSelectedMovieId } = useContext(MainStore);
   const [highlightedMovieIndex, setHighlightedMovieIndex] = useState(0);
 
   const [isImgLoaded, setIsImgLoaded] = useState(false);
@@ -82,7 +82,7 @@ export default function HighligtedMovie({ movies }: Props) {
             <button
               className="flex items-center justify-center gap-4 font-bold text-neutral-50 bg-neutral-50/30 hover:bg-neutral-50/40 rounded py-3 px-8"
               onClick={() =>
-                selectItem("movie", movies[highlightedMovieIndex].id)
+                setSelectedMovieId(movies[highlightedMovieIndex].id)
               }
             >
               <img src={Info} alt="" className="w-6 h-6" />

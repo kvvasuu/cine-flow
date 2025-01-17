@@ -36,7 +36,15 @@ export default function TVShows() {
           ),
         ]);
 
-        setAiringToday(airingResponse.data.results);
+        setAiringToday(
+          airingResponse.data.results.map((el: any) => {
+            return {
+              ...el,
+              title: el.name,
+              release_date: el.first_air_date,
+            };
+          })
+        );
         setOnTheAir(onTheAirResponse.data.results);
         setPopular(popularResponse.data.results);
         setTopRated(topRatedResponse.data.results);

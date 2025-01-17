@@ -150,7 +150,7 @@ export default function List({ movies, name }: Props) {
             {moviesArray.map((movie) => {
               return (
                 <SliderListElement
-                  movie={movie}
+                  item={movie}
                   key={movie.id}
                   onClick={(id) => setSelectedMovieId(id)}
                 ></SliderListElement>

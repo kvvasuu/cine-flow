@@ -1,4 +1,4 @@
-import { useState, useContext, FormEvent } from "react";
+import { useState, useContext, FormEvent, useRef, useEffect } from "react";
 import { MainStore } from "../../store/MainStore.tsx";
 
 interface Props {
@@ -10,6 +10,8 @@ export default function AddList({ onClose }: Props) {
 
   const [isTaken, setIsTaken] = useState(false);
   const [listName, setListName] = useState("");
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleListNameChange = (event: FormEvent<HTMLInputElement>) => {
     setListName(event.currentTarget?.value);
@@ -44,6 +46,10 @@ export default function AddList({ onClose }: Props) {
     onClose();
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <div
       className="w-full h-full absolute top-0 left-0  bg-black/50 backdrop-blur-[2px] flex items-center justify-center z-50"
@@ -75,6 +81,7 @@ export default function AddList({ onClose }: Props) {
           value={listName}
           onChange={handleListNameChange}
           placeholder="Name"
+          ref={inputRef}
           className="text-neutral-50 text-xl px-1 py-[2px] bg-transparent border-b-2 placeholder:text-neutral-600 border-neutral-600 outline-none"
         />
 

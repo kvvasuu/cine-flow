@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function SliderList({ movies, category, isTall, isTV }: Props) {
-  const { selectItem } = useContext(MainStore);
+  const { setSelectedMovieId, setSelectedSeriesId } = useContext(MainStore);
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
@@ -60,10 +60,14 @@ export default function SliderList({ movies, category, isTall, isTV }: Props) {
     }
   }, []);
 
-  const select = (id: number) => {
-    let type = "movie";
-    isTV ? (type = "tv") : "movie";
-    selectItem(type, id);
+  const selectItem = (id: number) => {
+    if (isTV) {
+      setSelectedMovieId(0);
+      setSelectedSeriesId(id);
+    } else {
+      setSelectedMovieId(id);
+      setSelectedSeriesId(0);
+    }
   };
 
   return (
@@ -120,13 +124,13 @@ export default function SliderList({ movies, category, isTall, isTV }: Props) {
             <SliderListElementTall
               movie={el}
               key={el.id}
-              onClick={(id) => select(id)}
+              onClick={(id) => selectItem(id)}
             ></SliderListElementTall>
           ) : (
             <SliderListElement
-              movie={el}
+              item={el}
               key={el.id}
-              onClick={(id) => select(id)}
+              onClick={(id) => selectItem(id)}
             ></SliderListElement>
           );
         })}

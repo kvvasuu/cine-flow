@@ -13,12 +13,13 @@ interface Props {
   openModal: boolean;
 }
 
-export default function InfoModal({ openModal }: Props) {
+export default function MovieModal({ openModal }: Props) {
   const {
     setSelectedMovieId,
     selectedMovieId,
+    selectedSeriesId,
+    setSelectedSeriesId,
     listState,
-    isTVSeries,
     listDispatch,
   } = useContext(MainStore);
 
@@ -32,10 +33,8 @@ export default function InfoModal({ openModal }: Props) {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const requestURL = `https://api.themoviedb.org/3/${
-        (isTVSeries ? "tv/" : "movie/") + selectedMovieId
-      }?append_to_response=videos&language=en-US`;
+    const fetchMovieData = async () => {
+      const requestURL = `https://api.themoviedb.org/3/movie/${selectedMovieId}?append_to_response=videos&language=en-US`;
 
       const movie = await axios.get(requestURL);
       const trailerKey = movie.data.videos.results[0]?.key;
@@ -64,15 +63,43 @@ export default function InfoModal({ openModal }: Props) {
         runtime,
         trailerKey,
       });
+    };
 
-      console.log(movie.data);
+    const fetchSeriesData = async () => {
+      const requestURL = `https://api.themoviedb.org/3/tv/${selectedSeriesId}?append_to_response=videos&language=en-US`;
+
+      const series = await axios.get(requestURL);
+
+      const {
+        id,
+        name,
+        backdrop_path,
+        poster_path,
+        overview,
+        vote_average,
+        first_air_date,
+        genres,
+      } = { ...series.data };
+
+      setMovieData({
+        id,
+        title: name,
+        backdrop_path,
+        poster_path,
+        overview,
+        vote_average,
+        release_date: first_air_date,
+        genres,
+        runtime: 0,
+        trailerKey: "",
+      });
     };
 
     const loaderTimeout = setTimeout(() => {
       setShowSkeleton(true);
     }, 1000);
 
-    fetchData();
+    selectedMovieId > 0 ? fetchMovieData() : fetchSeriesData();
 
     return () => clearTimeout(loaderTimeout);
   }, []);
@@ -122,6 +149,7 @@ export default function InfoModal({ openModal }: Props) {
   };
 
   const closeModal = () => {
+    setSelectedSeriesId(0);
     setSelectedMovieId(0);
   };
 
@@ -147,7 +175,7 @@ export default function InfoModal({ openModal }: Props) {
 
   return createPortal(
     <dialog
-      className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow backdrop:bg-black/50 backdrop:backdrop-blur-[2px]"
+      className="w-[calc(100%-4rem)] max-w-5xl h-[calc(100%-4rem)] bg-neutral-900 border-none outline-none rounded-2xl flex flex-col overflow-hidden shadow backdrop:bg-black/50 backdrop:backdrop-blur-[2px] z-50"
       ref={modalRef}
     >
       {!!movieData ? (
@@ -231,12 +259,14 @@ export default function InfoModal({ openModal }: Props) {
                     <div className="text-lg text-neutral-50 py-1">
                       {movieData.release_date?.slice(0, 4) || ""}
                     </div>
-                    <div className="text-lg text-neutral-50 py-1">
-                      {movieData.runtime} min.
-                    </div>
+                    {!!movieData.runtime && (
+                      <div className="text-lg text-neutral-50 py-1">
+                        {movieData.runtime} min.
+                      </div>
+                    )}
                   </div>
 
-                  <article className="text-neutral-50 h-44 overflow-y-auto scrollbar">
+                  <article className="text-neutral-50 h-44 pr-1 overflow-y-auto scrollbar">
                     {movieData.overview}
                   </article>
                 </div>

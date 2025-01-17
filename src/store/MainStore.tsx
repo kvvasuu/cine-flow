@@ -3,7 +3,6 @@ import {
   useState,
   useEffect,
   ReactNode,
-  useRef,
   useReducer,
   Dispatch,
 } from "react";
@@ -47,19 +46,19 @@ type Action =
 interface Context {
   listState: List[];
   selectedMovieId: number;
-  isTVSeries: boolean;
+  selectedSeriesId: number;
   setSelectedMovieId: (id: number) => void;
-  selectItem: (type: string, id: number) => void;
-  listDispatch: Dispatch<Action>; // Poprawiono typ
+  setSelectedSeriesId: (id: number) => void;
+  listDispatch: Dispatch<Action>;
 }
 
 export const MainStore = createContext<Context>({
   listState: [],
   selectedMovieId: 0,
-  isTVSeries: false,
+  selectedSeriesId: 0,
   setSelectedMovieId: () => {},
-  selectItem: () => {},
-  listDispatch: () => {}, // Typ zgodny z Dispatch<Action>
+  setSelectedSeriesId: () => {},
+  listDispatch: () => {},
 });
 
 export default function MainStoreProvider({
@@ -68,7 +67,7 @@ export default function MainStoreProvider({
   children: ReactNode;
 }) {
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
-  const isTVSeries = useRef(false);
+  const [selectedSeriesId, setSelectedSeriesId] = useState<number>(0);
 
   const listReducer = (state: List[], action: Action): List[] => {
     const { type, payload } = action;
@@ -130,18 +129,13 @@ export default function MainStoreProvider({
 
   const [listState, listDispatch] = useReducer(listReducer, initialState);
 
-  const selectItem = (type: string, id: number) => {
-    setSelectedMovieId(id);
-    isTVSeries.current = type === "series";
-  };
-
   const ctxValue = {
     listState,
     listDispatch,
     selectedMovieId,
-    isTVSeries: isTVSeries.current,
+    selectedSeriesId,
     setSelectedMovieId,
-    selectItem,
+    setSelectedSeriesId,
   };
 
   useEffect(() => {
