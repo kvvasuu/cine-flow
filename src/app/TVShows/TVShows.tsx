@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-
 import axios from "axios";
-
 import { Movie } from "../../types.tsx";
-
 import SliderList from "../../components/SliderList.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
@@ -15,65 +12,76 @@ export default function TVShows() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [
-          airingResponse,
-          onTheAirResponse,
-          popularResponse,
-          topRatedResponse,
-        ] = await Promise.all([
-          axios.get(
-            "https://api.themoviedb.org/3/tv/airing_today?language=en-US&page=1"
-          ),
-          axios.get(
-            "https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=2"
-          ),
-          axios.get(
-            "https://api.themoviedb.org/3/tv/popular?language=en-US&page=3"
-          ),
-          axios.get(
-            "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1"
-          ),
-        ]);
+      const storedAiringToday = sessionStorage.getItem("airingToday");
+      const storedOnTheAir = sessionStorage.getItem("onTheAir");
+      const storedPopular = sessionStorage.getItem("popular");
+      const storedTopRated = sessionStorage.getItem("topRated");
 
-        setAiringToday(
-          airingResponse.data.results.map((el: any) => {
-            return {
-              ...el,
-              title: el.name,
-              release_date: el.first_air_date,
-            };
-          })
-        );
-        setOnTheAir(
-          onTheAirResponse.data.results.map((el: any) => {
-            return {
-              ...el,
-              title: el.name,
-              release_date: el.first_air_date,
-            };
-          })
-        );
-        setPopular(
-          popularResponse.data.results.map((el: any) => {
-            return {
-              ...el,
-              title: el.name,
-              release_date: el.first_air_date,
-            };
-          })
-        );
-        setTopRated(
-          topRatedResponse.data.results.map((el: any) => {
-            return {
-              ...el,
-              title: el.name,
-              release_date: el.first_air_date,
-            };
-          })
-        );
-      } catch (error) {
-        console.error("Error fetching movies:", error);
+      if (
+        storedAiringToday &&
+        storedOnTheAir &&
+        storedPopular &&
+        storedTopRated
+      ) {
+        setAiringToday(JSON.parse(storedAiringToday));
+        setOnTheAir(JSON.parse(storedOnTheAir));
+        setPopular(JSON.parse(storedPopular));
+        setTopRated(JSON.parse(storedTopRated));
+      } else {
+        try {
+          const [
+            airingResponse,
+            onTheAirResponse,
+            popularResponse,
+            topRatedResponse,
+          ] = await Promise.all([
+            axios.get(
+              "https://api.themoviedb.org/3/tv/airing_today?language=en-US&page=1"
+            ),
+            axios.get(
+              "https://api.themoviedb.org/3/tv/on_the_air?language=en-US&page=2"
+            ),
+            axios.get(
+              "https://api.themoviedb.org/3/tv/popular?language=en-US&page=3"
+            ),
+            axios.get(
+              "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1"
+            ),
+          ]);
+
+          const airingData = airingResponse.data.results.map((el: any) => ({
+            ...el,
+            title: el.name,
+            release_date: el.first_air_date,
+          }));
+          const onTheAirData = onTheAirResponse.data.results.map((el: any) => ({
+            ...el,
+            title: el.name,
+            release_date: el.first_air_date,
+          }));
+          const popularData = popularResponse.data.results.map((el: any) => ({
+            ...el,
+            title: el.name,
+            release_date: el.first_air_date,
+          }));
+          const topRatedData = topRatedResponse.data.results.map((el: any) => ({
+            ...el,
+            title: el.name,
+            release_date: el.first_air_date,
+          }));
+
+          setAiringToday(airingData);
+          setOnTheAir(onTheAirData);
+          setPopular(popularData);
+          setTopRated(topRatedData);
+
+          sessionStorage.setItem("airingToday", JSON.stringify(airingData));
+          sessionStorage.setItem("onTheAir", JSON.stringify(onTheAirData));
+          sessionStorage.setItem("popular", JSON.stringify(popularData));
+          sessionStorage.setItem("topRated", JSON.stringify(topRatedData));
+        } catch (error) {
+          console.error("Error fetching TV shows:", error);
+        }
       }
     };
 

@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-
 import axios from "axios";
-
-import { Movie } from "../../types.tsx";
-
 import SliderList from "../../components/SliderList.tsx";
 import HighlightedMovie from "./HighlightedMovie.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
 
 export default function Home() {
-  const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
-  const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState(() =>
+    JSON.parse(sessionStorage.getItem("nowPlayingMovies") || "[]")
+  );
+  const [topRatedMovies, setTopRatedMovies] = useState(() =>
+    JSON.parse(sessionStorage.getItem("topRatedMovies") || "[]")
+  );
+  const [popularMovies, setPopularMovies] = useState(() =>
+    JSON.parse(sessionStorage.getItem("popularMovies") || "[]")
+  );
+  const [loading, setLoading] = useState(
+    !nowPlayingMovies.length || !topRatedMovies.length || !popularMovies.length
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,38 +34,48 @@ export default function Home() {
             ),
           ]);
 
-        setNowPlayingMovies(nowPlayingResponse.data.results);
-        setTopRatedMovies(topRatedResponse.data.results);
-        setPopularMovies(popularResponse.data.results);
+        const nowPlaying = nowPlayingResponse.data.results;
+        const topRated = topRatedResponse.data.results;
+        const popular = popularResponse.data.results;
+
+        sessionStorage.setItem("nowPlayingMovies", JSON.stringify(nowPlaying));
+        sessionStorage.setItem("topRatedMovies", JSON.stringify(topRated));
+        sessionStorage.setItem("popularMovies", JSON.stringify(popular));
+
+        setNowPlayingMovies(nowPlaying);
+        setTopRatedMovies(topRated);
+        setPopularMovies(popular);
       } catch (error) {
         console.error("Error fetching movies:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
 
   return (
-    <>
-      <div className="w-full pb-8 flex flex-col gap-8">
-        <HighlightedMovie movies={nowPlayingMovies}></HighlightedMovie>
+    <div className="w-full pb-8 flex flex-col gap-8">
+      <HighlightedMovie movies={nowPlayingMovies}></HighlightedMovie>
 
-        {popularMovies.length > 0 ? (
-          <SliderList movies={popularMovies} category="Popular"></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
+      {!loading && popularMovies.length > 0 ? (
+        <SliderList movies={popularMovies} category="Popular"></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
 
-        {topRatedMovies.length > 0 ? (
-          <SliderList
-            movies={topRatedMovies}
-            category="Top Rated"
-            isTall={true}
-          ></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
-      </div>
-    </>
+      {!loading && topRatedMovies.length > 0 ? (
+        <SliderList
+          movies={topRatedMovies}
+          category="Top Rated"
+          isTall={true}
+        ></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
+    </div>
   );
 }
