@@ -153,11 +153,17 @@ export default function MovieModal({ openModal }: Props) {
     setSelectedMovieId(0);
   };
 
-  const addMovie = () => {
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+
+  const toggleAddModal = () => {
+    setIsAddModalVisible((old) => !old);
+  };
+
+  const addMovie = (listName: string) => {
     listDispatch({
       type: "addMovie",
       payload: {
-        listName: "Favourites",
+        listName: listName || "Favourites",
         movie: {
           id: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
           type: selectedMovieId > 0 ? "movie" : "series",
@@ -166,11 +172,11 @@ export default function MovieModal({ openModal }: Props) {
     });
   };
 
-  const removeMovie = () => {
+  const removeMovie = (listName: string) => {
     listDispatch({
       type: "deleteMovie",
       payload: {
-        listName: "Favourites",
+        listName: listName || "Favourites",
         movieId: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
       },
     });
@@ -225,26 +231,64 @@ export default function MovieModal({ openModal }: Props) {
                       Play
                     </button>
                   </a>
-                  {listState
-                    .find((list) => list.name === "Favourites")
-                    ?.movies.some(
-                      (el) =>
-                        el.id === selectedMovieId || el.id === selectedSeriesId
+
+                  <div className="relative w-12">
+                    {listState.every((el) =>
+                      el.movies.some(
+                        (movie) =>
+                          movie.id === selectedMovieId ||
+                          movie.id === selectedSeriesId
+                      )
                     ) ? (
-                    <button
-                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 bg-neutral-50 text-neutral-900 border-2 border-neutral-50 rounded-full"
-                      onClick={removeMovie}
-                    >
-                      <i className="fa-solid fa-check text-xl"></i>
-                    </button>
-                  ) : (
-                    <button
-                      className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
-                      onClick={addMovie}
-                    >
-                      <i className="fa-solid fa-plus text-xl"></i>
-                    </button>
-                  )}
+                      <button
+                        className="flex items-center justify-center mt-6 font-bold h-12 w-12 bg-neutral-50 text-neutral-900 border-2 border-neutral-50 rounded-full"
+                        onClick={toggleAddModal}
+                      >
+                        <i className="fa-solid fa-check text-xl"></i>
+                      </button>
+                    ) : (
+                      <button
+                        className="flex items-center justify-center mt-6 font-bold h-12 w-12 text-neutral-300 hover:text-neutral-50 border-2 border-neutral-300 rounded-full hover:border-neutral-50"
+                        onClick={toggleAddModal}
+                      >
+                        <i className="fa-solid fa-plus text-xl"></i>
+                      </button>
+                    )}
+
+                    {isAddModalVisible && (
+                      <div className="bg-neutral-50 rounded absolute left-8 top-14">
+                        <ul className="rounded overflow-hidden">
+                          {listState.map((list) =>
+                            listState
+                              .find((el) => el.name === list.name)
+                              ?.movies.some(
+                                (el) =>
+                                  el.id === selectedMovieId ||
+                                  el.id === selectedSeriesId
+                              ) ? (
+                              <li
+                                className="py-1 px-3 font-semibold hover:bg-neutral-200 cursor-pointer flex flex-row items-center justify-between gap-2"
+                                key={list.name}
+                                onClick={() => removeMovie(list.name)}
+                              >
+                                <span>{list.name}</span>
+                                <i className="fa-solid fa-check"></i>
+                              </li>
+                            ) : (
+                              <li
+                                className="py-1 px-3 font-semibold hover:bg-neutral-200 cursor-pointer flex flex-row items-center justify-between gap-2"
+                                key={list.name}
+                                onClick={() => addMovie(list.name)}
+                              >
+                                <span>{list.name}</span>
+                                <i className="fa-solid fa-check text-transparent"></i>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex mt-16 grow gap-8">
