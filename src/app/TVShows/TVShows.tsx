@@ -3,6 +3,8 @@ import axios from "axios";
 import { Movie } from "../../types.tsx";
 import SliderList from "../../components/SliderList.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
+import { motion } from "motion/react"
+
 
 export default function TVShows() {
   const [airingToday, setAiringToday] = useState<Movie[]>([]);
@@ -89,36 +91,39 @@ export default function TVShows() {
   }, []);
 
   return (
-    <>
-      <div className="w-full pb-8 mt-20 flex flex-col gap-8">
-        {airingToday.length > 0 ? (
-          <SliderList
-            isTV
-            movies={airingToday}
-            category="Airing Today"
-          ></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="w-full pb-8 mt-20 flex flex-col gap-8">
+      {airingToday.length > 0 ? (
+        <SliderList
+          isTV
+          movies={airingToday}
+          category="Airing Today"
+        ></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
 
-        {onTheAir.length > 0 ? (
-          <SliderList isTV movies={onTheAir} category="On The Air"></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
+      {onTheAir.length > 0 ? (
+        <SliderList isTV movies={onTheAir} category="On The Air"></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
 
-        {popular.length > 0 ? (
-          <SliderList isTV movies={popular} category="Popular"></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
+      {popular.length > 0 ? (
+        <SliderList isTV movies={popular} category="Popular"></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
 
-        {topRated.length > 0 ? (
-          <SliderList isTV movies={topRated} category="Top Rated"></SliderList>
-        ) : (
-          <SliderListSkeleton></SliderListSkeleton>
-        )}
-      </div>
-    </>
+      {topRated.length > 0 ? (
+        <SliderList isTV movies={topRated} category="Top Rated"></SliderList>
+      ) : (
+        <SliderListSkeleton></SliderListSkeleton>
+      )}
+    </motion.div>
   );
 }

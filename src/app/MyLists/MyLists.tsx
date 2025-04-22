@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { MainStore } from "../../store/MainStore.tsx";
+import { motion } from "motion/react"
+
 
 import AddList from "./AddList.tsx";
 import List from "./List.tsx";
@@ -9,14 +11,18 @@ export default function MyLists() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {};
+    const fetchData = async () => { };
 
     fetchData();
   }, []);
 
   return (
     <>
-      <div className="w-full min-h-[calc(100vh-14rem)] pb-8 flex flex-col items-center justify-start gap-8 mt-20">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }} className="w-full min-h-[calc(100vh-14rem)] pb-8 flex flex-col items-center justify-start gap-8 mt-20">
         {listState.length === 0 && (
           <div className="w-full h-40 mt-16 flex items-center justify-center">
             <h2 className="font-semibold text-xl text-neutral-500 px-16 select-none">
@@ -35,7 +41,7 @@ export default function MyLists() {
           <i className="fa-solid fa-plus text-5xl"></i>
           <p>Add list</p>
         </button>
-      </div>
+      </motion.div>
       {isModalVisible && (
         <AddList onClose={() => setIsModalVisible(false)}></AddList>
       )}

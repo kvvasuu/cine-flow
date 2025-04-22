@@ -3,6 +3,7 @@ import axios from "axios";
 import { Movie } from "../../types.tsx";
 import SliderList from "../../components/SliderList.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
+import { motion } from "motion/react"
 
 export default function Movies() {
   const [actionMovies, setActionMovies] = useState<Movie[]>(
@@ -23,10 +24,10 @@ export default function Movies() {
 
   const [loading, setLoading] = useState(
     !actionMovies.length ||
-      !comedyMovies.length ||
-      !fantasyMovies.length ||
-      !romanceMovies.length ||
-      !horrorMovies.length
+    !comedyMovies.length ||
+    !fantasyMovies.length ||
+    !romanceMovies.length ||
+    !horrorMovies.length
   );
 
   useEffect(() => {
@@ -86,7 +87,12 @@ export default function Movies() {
   }, [loading]);
 
   return (
-    <div className="w-full pb-8 mt-20 flex flex-col gap-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="w-full pb-8 mt-20 flex flex-col gap-8">
       {actionMovies.length > 0 ? (
         <SliderList movies={actionMovies} category="Action"></SliderList>
       ) : (
@@ -116,6 +122,6 @@ export default function Movies() {
       ) : (
         <SliderListSkeleton></SliderListSkeleton>
       )}
-    </div>
+    </motion.div>
   );
 }

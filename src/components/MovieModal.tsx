@@ -203,7 +203,7 @@ export default function MovieModal({ openModal }: Props) {
               src={
                 movieData.backdrop_path
                   ? "https://image.tmdb.org/t/p/original" +
-                    movieData.backdrop_path
+                  movieData.backdrop_path
                   : Placeholder
               }
               alt="Movie poster"
@@ -300,8 +300,8 @@ export default function MovieModal({ openModal }: Props) {
                         (movieData.vote_average > 7.5
                           ? "border-green-600 text-green-600"
                           : movieData.vote_average < 4
-                          ? "border-red-600 text-red-600"
-                          : "border-yellow-600 text-yellow-600")
+                            ? "border-red-600 text-red-600"
+                            : "border-yellow-600 text-yellow-600")
                       }
                     >
                       {Math.round(movieData.vote_average * 100) / 100}

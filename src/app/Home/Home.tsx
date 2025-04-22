@@ -3,6 +3,7 @@ import axios from "axios";
 import SliderList from "../../components/SliderList.tsx";
 import HighlightedMovie from "./HighlightedMovie.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
+import { motion } from "motion/react"
 
 export default function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState(() =>
@@ -58,7 +59,12 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <div className="w-full pb-8 flex flex-col gap-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="w-full pb-8 flex flex-col gap-8">
       <HighlightedMovie movies={nowPlayingMovies}></HighlightedMovie>
 
       {!loading && popularMovies.length > 0 ? (
@@ -76,6 +82,6 @@ export default function Home() {
       ) : (
         <SliderListSkeleton></SliderListSkeleton>
       )}
-    </div>
+    </motion.div>
   );
 }

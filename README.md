@@ -27,7 +27,9 @@ Keep in mind that this application is a learning project and focuses mainly on U
 ## Technologies:
 
 - Typescript
-- React (Hooks, Context API)
+- React
+- Zustand
+- Motion
 - Tailwind CSS
 - FontAwesome
 

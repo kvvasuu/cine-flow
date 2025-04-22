@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
-import { MainStore } from "../../store/MainStore.tsx";
+import useMainStore from "../../store/Store.tsx";
 import axios from "axios";
 
 import SliderList from "../../components/SliderList.tsx";
@@ -16,7 +16,8 @@ interface Props {
 }
 
 export default function HighligtedMovie({ movies }: Props) {
-  const { setSelectedMovieId } = useContext(MainStore);
+  const setSelectedMovieId = useMainStore((state) => state.setSelectedMovieId);
+
   const [highlightedMovieIndex, setHighlightedMovieIndex] = useState(0);
 
   const [isImgLoaded, setIsImgLoaded] = useState(false);
