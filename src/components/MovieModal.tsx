@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import { createPortal } from "react-dom";
-import { MainStore } from "../store/MainStore";
+import useMainStore from "../store/Store.tsx";
 
 import Placeholder from "../assets/images/no-img-placeholder.png";
 
@@ -15,13 +15,16 @@ interface Props {
 
 export default function MovieModal({ openModal }: Props) {
   const {
-    setSelectedMovieId,
+    listState,
     selectedMovieId,
     selectedSeriesId,
+    setSelectedMovieId,
     setSelectedSeriesId,
-    listState,
-    listDispatch,
-  } = useContext(MainStore);
+    addList,
+    addMovie,
+    deleteList,
+    deleteMovie,
+  } = useMainStore();
 
   const [movieData, setMovieData] = useState<Movie | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -49,6 +52,7 @@ export default function MovieModal({ openModal }: Props) {
         release_date,
         genres,
         runtime,
+        type,
       } = { ...movie.data };
 
       setMovieData({
@@ -62,6 +66,7 @@ export default function MovieModal({ openModal }: Props) {
         genres,
         runtime,
         trailerKey,
+        type: type || "movie",
       });
     };
 
@@ -79,6 +84,7 @@ export default function MovieModal({ openModal }: Props) {
         vote_average,
         first_air_date,
         genres,
+        type,
       } = { ...series.data };
 
       setMovieData({
@@ -92,6 +98,7 @@ export default function MovieModal({ openModal }: Props) {
         genres,
         runtime: 0,
         trailerKey: "",
+        type: type || "series",
       });
     };
 
@@ -159,27 +166,19 @@ export default function MovieModal({ openModal }: Props) {
     setIsAddModalVisible((old) => !old);
   };
 
-  const addMovie = (listName: string) => {
-    listDispatch({
-      type: "addMovie",
-      payload: {
-        listName: listName || "Favourites",
-        movie: {
-          id: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
-          type: selectedMovieId > 0 ? "movie" : "series",
-        },
-      },
-    });
+  const addMovieHandler = (listName: string) => {
+    const selectedMovie: { id: number; type: "movie" | "series" } = {
+      id: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
+      type: selectedMovieId > 0 ? "movie" : "series",
+    };
+
+    addMovie(listName || "Favourites", selectedMovie);
   };
 
   const removeMovie = (listName: string) => {
-    listDispatch({
-      type: "deleteMovie",
-      payload: {
-        listName: listName || "Favourites",
-        movieId: selectedMovieId > 0 ? selectedMovieId : selectedSeriesId,
-      },
-    });
+    const movieId = selectedMovieId > 0 ? selectedMovieId : selectedSeriesId;
+
+    deleteMovie(listName || "Favourites", movieId);
   };
 
   return createPortal(
@@ -203,7 +202,7 @@ export default function MovieModal({ openModal }: Props) {
               src={
                 movieData.backdrop_path
                   ? "https://image.tmdb.org/t/p/original" +
-                  movieData.backdrop_path
+                    movieData.backdrop_path
                   : Placeholder
               }
               alt="Movie poster"
@@ -278,7 +277,7 @@ export default function MovieModal({ openModal }: Props) {
                               <li
                                 className="py-1 px-3 font-semibold hover:bg-neutral-200 cursor-pointer flex flex-row items-center justify-between gap-2"
                                 key={list.name}
-                                onClick={() => addMovie(list.name)}
+                                onClick={() => addMovieHandler(list.name)}
                               >
                                 <span>{list.name}</span>
                                 <i className="fa-solid fa-check text-transparent"></i>
@@ -300,8 +299,8 @@ export default function MovieModal({ openModal }: Props) {
                         (movieData.vote_average > 7.5
                           ? "border-green-600 text-green-600"
                           : movieData.vote_average < 4
-                            ? "border-red-600 text-red-600"
-                            : "border-yellow-600 text-yellow-600")
+                          ? "border-red-600 text-red-600"
+                          : "border-yellow-600 text-yellow-600")
                       }
                     >
                       {Math.round(movieData.vote_average * 100) / 100}

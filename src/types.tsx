@@ -9,7 +9,7 @@ interface Movie {
   genres: { id: string; name: string }[];
   runtime: number;
   trailerKey: string;
-  type?: "movie" | "series";
+  type: "movie" | "series";
 }
 
 interface List {
