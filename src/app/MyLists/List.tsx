@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect, useContext } from "react";
-import { MainStore } from "../../store/MainStore.tsx";
+import { useRef, useState, useEffect } from "react";
 import { Movie } from "../../types.tsx";
 import axios from "axios";
 
 import SliderListElement from "../../components/SliderListElement.tsx";
 import SliderListSkeleton from "../../components/skeletons/SliderListSkeleton.tsx";
+import useMainStore from "../../store/Store.tsx";
 
 interface Props {
   movies: { id: number; type: "movie" | "series" }[];
@@ -12,8 +12,11 @@ interface Props {
 }
 
 export default function List({ movies, name }: Props) {
-  const { setSelectedMovieId, setSelectedSeriesId, listDispatch } =
-    useContext(MainStore);
+  const setSelectedMovieId = useMainStore((state) => state.setSelectedMovieId);
+  const setSelectedSeriesId = useMainStore(
+    (state) => state.setSelectedSeriesId
+  );
+  const deleteList = useMainStore((state) => state.deleteList);
 
   const [moviesArray, setMoviesArray] = useState<Movie[]>([]);
 
@@ -88,15 +91,6 @@ export default function List({ movies, name }: Props) {
 
     fetchData();
   }, [movies]);
-
-  const deleteList = (name: string) => {
-    listDispatch({
-      type: "deleteList",
-      payload: {
-        listName: name,
-      },
-    });
-  };
 
   const selectItem = (movie: Movie) => {
     movie.type === "series"

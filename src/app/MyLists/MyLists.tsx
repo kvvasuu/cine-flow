@@ -1,17 +1,16 @@
-import { useEffect, useState, useContext } from "react";
-import { MainStore } from "../../store/MainStore.tsx";
-import { motion } from "motion/react"
-
-
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import AddList from "./AddList.tsx";
 import List from "./List.tsx";
+import useMainStore from "../../store/Store.tsx";
 
 export default function MyLists() {
-  const { listState } = useContext(MainStore);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const listState = useMainStore((state) => state.listState);
+
   useEffect(() => {
-    const fetchData = async () => { };
+    const fetchData = async () => {};
 
     fetchData();
   }, []);
@@ -22,7 +21,9 @@ export default function MyLists() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }} className="w-full min-h-[calc(100vh-14rem)] pb-8 flex flex-col items-center justify-start gap-8 mt-20">
+        transition={{ duration: 0.3 }}
+        className="w-full min-h-[calc(100vh-14rem)] pb-8 flex flex-col items-center justify-start gap-8 mt-20"
+      >
         {listState.length === 0 && (
           <div className="w-full h-40 mt-16 flex items-center justify-center">
             <h2 className="font-semibold text-xl text-neutral-500 px-16 select-none">

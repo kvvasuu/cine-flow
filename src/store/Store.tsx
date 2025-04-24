@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { List, Movie } from "../types";
+import { List } from "../types";
 
 type State = {
   listState: List[];

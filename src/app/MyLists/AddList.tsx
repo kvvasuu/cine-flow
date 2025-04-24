@@ -1,12 +1,13 @@
-import { useState, useContext, FormEvent, useRef, useEffect } from "react";
-import { MainStore } from "../../store/MainStore.tsx";
+import { useState, FormEvent, useRef, useEffect } from "react";
+import useMainStore from "../../store/Store.tsx";
 
 interface Props {
   onClose: () => void;
 }
 
 export default function AddList({ onClose }: Props) {
-  const { listState, listDispatch } = useContext(MainStore);
+  const listState = useMainStore((state) => state.listState);
+  const addList = useMainStore((state) => state.addList);
 
   const [isTaken, setIsTaken] = useState(false);
   const [listName, setListName] = useState("");
@@ -18,7 +19,7 @@ export default function AddList({ onClose }: Props) {
     setIsTaken(false);
   };
 
-  const addList = () => {
+  const addListHandler = () => {
     if (listName.length <= 0) {
       return;
     }
@@ -32,12 +33,7 @@ export default function AddList({ onClose }: Props) {
       return;
     }
 
-    listDispatch({
-      type: "addList",
-      payload: {
-        listName: listName.trim(),
-      },
-    });
+    addList(listName.trim());
 
     closeModal();
   };
@@ -87,7 +83,7 @@ export default function AddList({ onClose }: Props) {
 
         <button
           className="flex items-center justify-center mt-6 font-bold text-neutral-950 bg-neutral-50 rounded py-3 px-8 hover:bg-neutral-200"
-          onClick={addList}
+          onClick={addListHandler}
         >
           Add
         </button>
