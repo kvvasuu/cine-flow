@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect, useContext } from "react";
-import { MainStore } from "../store/MainStore.tsx";
+import { useRef, useState, useEffect } from "react";
+import useMainStore from "../store/Store.tsx";
 import { Movie } from "../types.tsx";
 
 import SliderListElement from "./SliderListElement.tsx";
@@ -13,7 +13,10 @@ interface Props {
 }
 
 export default function SliderList({ movies, category, isTall, isTV }: Props) {
-  const { setSelectedMovieId, setSelectedSeriesId } = useContext(MainStore);
+  const setSelectedMovieId = useMainStore((state) => state.setSelectedMovieId);
+  const setSelectedSeriesId = useMainStore(
+    (state) => state.setSelectedSeriesId
+  );
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
 
